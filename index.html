@@ -628,12 +628,82 @@ function selectOption(i) {
 
 function nextQuestion() {
   if (answers[TAXES[currentQ].id] === undefined) return;
-  if (currentQ < TAXES.length - 1) { currentQ++; renderQuestion(); }
-  else { showScreen('screen-capture'); }
+  if (currentQ < TAXES.length - 1) { 
+      currentQ++; 
+      renderQuestion(); 
+  }
+  else { 
+      showScreen('screen-capture'); 
+      injectKitScores();
+  }
 }
 
 function prevQuestion() {
   if (currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+// Inject Scores into Kit.com Form
+function injectKitScores() {
+  // Calculate scores per category
+  const cats = [...new Set(TAXES.map(t => t.category))];
+  const catScores = {};
+  cats.forEach(cat => {
+    const catTaxes = TAXES.filter(t => t.category === cat);
+    const total = catTaxes.reduce((sum, t) => sum + (answers[t.id] || 0), 0);
+    const max = catTaxes.length * 4;
+    catScores[cat] = Math.round((total / max) * 100);
+  });
+
+  const totalScore = Object.values(answers).reduce((s, v) => s + v, 0);
+  const totalMax = TAXES.length * 4;
+  const totalPct = Math.round((totalScore / totalMax) * 100);
+
+  // Interpretation
+  let band = 'Lower burden';
+  if (totalPct >= 75) band = 'Severe burden';
+  else if (totalPct >= 50) band = 'Significant burden';
+  else if (totalPct >= 30) band = 'Moderate burden';
+
+  const highestCat = cats.reduce((a, b) => catScores[a] > catScores[b] ? a : b);
+
+  // Prepare custom fields matching Kit
+  const customFields = {
+      'et_total_score': String(totalPct),
+      'et_burden_band': band,
+      'et_highest_category': highestCat,
+      'et_foundation_pct': String(catScores['Foundation Taxes'] || 0),
+      'et_survival_pct': String(catScores['Survival Taxes'] || 0),
+      'et_systemic_pct': String(catScores['Systemic Taxes'] || 0),
+      'et_leadership_pct': String(catScores['Leadership Taxes'] || 0),
+      'et_resistance_pct': String(catScores['Resistance Taxes'] || 0),
+      'et_source': 'score.costofblackexcellence.com'
+  };
+
+  // The Kit form loads asynchronously, so we wait for it to render in the DOM
+  let attempts = 0;
+  const checkExist = setInterval(function() {
+      attempts++;
+      const form = document.querySelector('.formkit-form');
+      if (form) {
+          clearInterval(checkExist);
+          
+          // Inject each custom field as a hidden input
+          for (const [key, value] of Object.entries(customFields)) {
+              let existingInput = form.querySelector(`input[name="fields[${key}]"]`);
+              if (!existingInput) {
+                  const input = document.createElement('input');
+                  input.type = 'hidden';
+                  input.name = `fields[${key}]`;
+                  input.value = value;
+                  form.appendChild(input);
+              } else {
+                  existingInput.value = value; // Update if it already exists
+              }
+          }
+      } else if (attempts > 100) { // Stop checking after 10 seconds
+          clearInterval(checkExist);
+      }
+  }, 100);
 }
 
 // Display Results
@@ -741,7 +811,7 @@ function showResults() {
                     <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Download &rarr;</span>
                 </a>
 
-                <a href="https://blog.costofblackexcellence.com" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+                <a href="https://blog.costofblackexcellence.com/toolkit/" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
                     <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">The Toolkit</span>
                     <h4 class="font-serif text-2xl font-bold text-white mb-3">Boundary Scripts</h4>
                     <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Direct, Diplomatic, and Documentation strategy scripts for the situations you face every week.</p>
