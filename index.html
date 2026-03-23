@@ -618,7 +618,7 @@ async function submitCapture() {
 
   // ── KIT CONFIGURATION ──
   const KIT_FORM_ID  = '9141244';
-  const KIT_API_KEY  = 'PASTE_YOUR_KIT_API_KEY'; // MUST REPLACE BEFORE LIVE
+  const KIT_API_KEY  = 'kit_a7b076f1f09b2387066334740abc3691'; // MUST REPLACE BEFORE LIVE
 
   // Calculate scores
   const cats = [...new Set(TAXES.map(t => t.category))];
@@ -647,7 +647,7 @@ async function submitCapture() {
   btn.classList.add('opacity-70');
 
   try {
-    await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
+    await fetch(`https://api.convertkit.com/v3/forms/${9141244}/subscribe`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
