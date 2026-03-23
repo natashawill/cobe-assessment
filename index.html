@@ -23,9 +23,10 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Tailwind Config to match main site -->
+    <!-- Tailwind Config -->
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -48,6 +49,15 @@
         }
     </script>
     
+    <!-- Dark Mode Init Script -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <style>
         /* Screen Management */
         .screen { display: none; min-height: 100vh; }
@@ -66,66 +76,61 @@
             from { opacity: 0; transform: translateY(16px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-        .animate-fade-up {
-            animation: fadeUp 0.6s ease-out forwards;
+        .animate-fade-up { animation: fadeUp 0.6s ease-out forwards; }
+
+        /* Real-Time Validation Toast */
+        #validation-toast {
+            position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px);
+            opacity: 0; transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); z-index: 100;
+        }
+        #validation-toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* Somatic Breath Animation */
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(2.5); opacity: 0.1; }
+            100% { transform: scale(1); opacity: 0.3; }
+        }
+        .breath-circle {
+            animation: breathe 8s ease-in-out infinite;
         }
 
         /* Form Input Autofill Fixes */
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover, 
-        input:-webkit-autofill:focus, 
-        input:-webkit-autofill:active{
-            -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
-            -webkit-text-fill-color: #1A1209 !important;
+        input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px transparent inset !important; transition: background-color 5000s ease-in-out 0s;
         }
 
         /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #FAF7F2; }
+        .dark ::-webkit-scrollbar-track { background: #1A1209; }
         ::-webkit-scrollbar-thumb { background: #C8962A; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #1A1209; }
+        ::-webkit-scrollbar-thumb:hover { background: #5C4A30; }
 
         /* Kit Form Overrides */
         .formkit-form { max-width: 100% !important; padding: 0 !important; margin: 0 !important; box-shadow: none !important; background: transparent !important; }
         .formkit-fields { display: flex !important; flex-direction: column !important; gap: 1rem !important; }
         .formkit-field { width: 100% !important; margin: 0 !important; }
-        .formkit-input { 
-            width: 100% !important; 
-            background: #f9fafb !important; 
-            border: 1px solid #e5e7eb !important; 
-            border-radius: 0.5rem !important; 
-            padding: 0.75rem 1rem !important; 
-            font-family: 'DM Sans', sans-serif !important; 
-            color: #1A1209 !important; 
-        }
+        .formkit-input { width: 100% !important; background: #f9fafb !important; border: 1px solid #e5e7eb !important; border-radius: 0.5rem !important; padding: 0.75rem 1rem !important; font-family: 'DM Sans', sans-serif !important; color: #1A1209 !important; transition: all 0.3s ease !important; }
         .formkit-input:focus { border-color: #C8962A !important; outline: none !important; }
-        .formkit-submit { 
-            width: 100% !important; 
-            background: #1A1209 !important; 
-            color: #C8962A !important; 
-            border-radius: 0.5rem !important; 
-            padding: 1rem 1rem !important; 
-            font-family: 'DM Sans', sans-serif !important; 
-            font-weight: 700 !important; 
-            text-transform: uppercase !important; 
-            letter-spacing: 0.1em !important; 
-            border: none !important;
-            cursor: pointer !important;
-            margin: 0 !important;
-            transition: all 0.3s ease !important;
-        }
+        .dark .formkit-input { background: rgba(0,0,0,0.2) !important; border-color: rgba(255,255,255,0.1) !important; color: #ffffff !important; }
+        .dark .formkit-input:focus { border-color: #C8962A !important; background: rgba(0,0,0,0.4) !important; }
+        .dark .formkit-input::placeholder { color: rgba(255,255,255,0.4) !important; }
+        .formkit-submit { width: 100% !important; background: #1A1209 !important; color: #C8962A !important; border-radius: 0.5rem !important; padding: 1rem 1rem !important; font-family: 'DM Sans', sans-serif !important; font-weight: 700 !important; text-transform: uppercase !important; letter-spacing: 0.1em !important; border: 1.5px solid transparent !important; cursor: pointer !important; margin: 0 !important; transition: all 0.3s ease !important; }
         .formkit-submit > span { color: #C8962A !important; transition: all 0.3s ease !important; }
         .formkit-submit:hover { background: #2D2416 !important; }
         .formkit-submit:hover > span { color: #ffffff !important; }
+        .dark .formkit-submit { background: transparent !important; border-color: #C8962A !important; }
+        .dark .formkit-submit:hover { background: #C8962A !important; }
+        .dark .formkit-submit:hover > span { color: #1A1209 !important; }
         .formkit-powered-by-convertkit-container { justify-content: center !important; margin-top: 1rem !important; }
+        .dark .formkit-powered-by-convertkit-container svg path { fill: #ffffff !important; opacity: 0.5; }
     </style>
 </head>
-<body class="antialiased font-sans text-cobe-black bg-cobe-light">
+<body class="antialiased font-sans text-cobe-black dark:text-cobe-cream bg-cobe-light dark:bg-cobe-black transition-colors duration-300">
 
 <!-- ══════════════════════════════════ LANDING SCREEN ══════════════════════════════════ -->
 <section id="screen-landing" class="screen active hero-pattern relative">
-    
-    <!-- Simple Header for Lead Magnet -->
     <header class="absolute top-0 w-full p-6 md:p-8 z-20">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="inline-flex flex-col group">
@@ -136,15 +141,20 @@
                     RESEARCH INSTITUTE
                 </div>
             </div>
-            <a href="https://www.costofblackexcellence.com" class="text-xs font-bold uppercase tracking-widest text-cobe-accent hover:text-white transition-colors hidden sm:block">
-                Return to Main Site
-            </a>
+            <div class="flex items-center gap-6">
+                <button onclick="toggleTheme()" class="text-gray-400 hover:text-cobe-accent transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                    <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                </button>
+                <a href="https://www.costofblackexcellence.com" class="text-xs font-bold uppercase tracking-widest text-cobe-accent hover:text-white transition-colors hidden sm:block">
+                    Return to Main Site
+                </a>
+            </div>
         </div>
     </header>
 
     <div class="flex-grow flex flex-col justify-center items-center p-6 mt-16 z-10">
         <div class="max-w-4xl w-full mx-auto animate-fade-up">
-            
             <div class="text-center mb-16">
                 <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full bg-cobe-accent/10 border border-cobe-accent/20 text-cobe-accent text-[10px] font-bold uppercase tracking-wider mb-6">
                     <span class="w-1.5 h-1.5 rounded-full bg-cobe-accent"></span> Assessment Tool
@@ -158,19 +168,22 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-                
-                <!-- Track: Professional -->
-                <button onclick="startAssessment()" class="group bg-white/5 border border-white/10 p-8 md:p-10 rounded-3xl text-left hover:bg-white/10 hover:border-cobe-accent/50 transition-all duration-300 relative overflow-hidden flex flex-col h-full focus:outline-none">
-                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-accent/20 rounded-full blur-[40px] group-hover:bg-cobe-accent/40 transition-colors"></div>
+                <div class="group bg-white/5 border border-white/10 p-8 md:p-10 rounded-3xl text-left hover:bg-white/10 hover:border-cobe-accent/50 transition-all duration-300 relative overflow-hidden flex flex-col h-full">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-accent/20 rounded-full blur-[40px] group-hover:bg-cobe-accent/40 transition-colors pointer-events-none"></div>
                     <span class="text-[10px] font-bold tracking-widest uppercase text-cobe-accent mb-4 block">For Black Professionals</span>
                     <h3 class="text-2xl font-serif font-bold text-white mb-3">Calculate your Excellence Tax™</h3>
                     <p class="text-sm text-gray-400 leading-relaxed mb-8 flex-grow">Take the 15-question diagnostic. Name what you carry. Understand your burden profile and how to protect your peace.</p>
-                    <div class="inline-flex items-center text-sm font-bold text-white group-hover:text-cobe-accent transition-colors mt-auto">
-                        Begin assessment <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                    
+                    <div class="mt-auto flex flex-col items-start gap-4">
+                        <button onclick="startAssessment()" class="inline-flex items-center text-sm font-bold text-white group-hover:text-cobe-accent transition-colors focus:outline-none w-max relative z-10">
+                            Begin assessment <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                        </button>
+                        <button id="btn-prev-results" onclick="loadPreviousResults()" class="hidden inline-flex items-center text-[10px] font-bold uppercase tracking-widest text-cobe-accent hover:text-white transition-colors focus:outline-none border-t border-white/10 pt-4 w-full relative z-10">
+                            <i data-lucide="rotate-ccw" class="mr-2 w-4 h-4"></i> View Previous Results
+                        </button>
                     </div>
-                </button>
+                </div>
 
-                <!-- Track: Corporate -->
                 <button onclick="showCorporate()" class="group bg-cobe-rust/10 border border-cobe-rust/30 p-8 md:p-10 rounded-3xl text-left hover:bg-cobe-rust/20 hover:border-cobe-rust/60 transition-all duration-300 relative overflow-hidden flex flex-col h-full focus:outline-none">
                     <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-rust/20 rounded-full blur-[40px] group-hover:bg-cobe-rust/40 transition-colors"></div>
                     <span class="text-[10px] font-bold tracking-widest uppercase text-cobe-rust/80 mb-4 block">For HR & DEI Leaders</span>
@@ -180,49 +193,61 @@
                         Access corporate track <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
                     </div>
                 </button>
-
             </div>
-
-            <p class="text-center text-xs text-gray-500 mt-16 uppercase tracking-widest">
-                Independent research. No corporate funding. Evidence free from institutional constraint.
-            </p>
+            <p class="text-center text-xs text-gray-500 mt-16 uppercase tracking-widest">Independent research. No corporate funding. Evidence free from institutional constraint.</p>
         </div>
     </div>
 </section>
 
 <!-- ══════════════════════════════════ ASSESSMENT SCREEN ══════════════════════════════════ -->
-<section id="screen-assessment" class="screen bg-cobe-light">
-    <!-- Header with Progress -->
-    <header class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+<section id="screen-assessment" class="screen bg-cobe-light dark:bg-cobe-black">
+    <header class="bg-white dark:bg-cobe-dark border-b border-gray-200 dark:border-white/10 py-4 px-6 sticky top-0 z-50 transition-colors duration-300">
         <div class="max-w-4xl mx-auto flex items-center justify-between gap-4 md:gap-8">
-            <div class="font-serif font-bold text-lg text-cobe-black hidden sm:block">COBE<span class="text-cobe-accent">.</span></div>
+            <div class="font-serif font-bold text-lg text-cobe-black dark:text-white hidden sm:block">COBE<span class="text-cobe-accent">.</span></div>
             
             <div class="flex-grow">
-                <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                <div class="flex justify-between items-end mb-2">
+                    <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400" id="progress-label">Question 1 of 15</div>
+                    <div class="text-[10px] text-gray-400 hidden md:block">Press <kbd class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded font-sans mx-1">1</kbd> - <kbd class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded font-sans mx-1">5</kbd> to select</div>
+                </div>
+                <div class="h-1.5 w-full bg-gray-100 dark:bg-black/50 rounded-full overflow-hidden">
                     <div id="progress-fill" class="h-full bg-cobe-accent transition-all duration-500 ease-out" style="width:0%"></div>
                 </div>
-                <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right mt-2" id="progress-label">Question 1 of 15</div>
             </div>
 
-            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black transition-colors focus:outline-none">
-                Exit
-            </button>
+            <div class="flex items-center gap-6">
+                <button onclick="toggleTheme()" class="text-gray-400 hover:text-cobe-accent transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+                    <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
+                </button>
+                <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black dark:hover:text-white transition-colors focus:outline-none">
+                    Exit
+                </button>
+            </div>
         </div>
     </header>
 
-    <div class="flex-grow flex flex-col justify-center py-12 px-4 sm:px-6">
+    <div class="flex-grow flex flex-col justify-center py-12 px-4 sm:px-6 relative">
+        <!-- Validation Toast -->
+        <div id="validation-toast" class="bg-cobe-black text-white px-6 py-3 rounded-full shadow-2xl border border-white/10 flex items-center gap-3 backdrop-blur-md">
+            <i data-lucide="check-circle" class="w-4 h-4 text-cobe-accent"></i>
+            <span id="validation-text" class="text-sm font-medium"></span>
+        </div>
+
         <div class="max-w-2xl mx-auto w-full animate-fade-up" id="assessment-body">
             <!-- Injected by JS -->
         </div>
     </div>
 </section>
 
-<!-- ══════════════════════════════════ LOADING SCREEN ══════════════════════════════════ -->
-<section id="screen-loading" class="screen hero-pattern text-white">
+<!-- ══════════════════════════════════ SOMATIC LOADING SCREEN ══════════════════════════════════ -->
+<section id="screen-loading" class="screen hero-pattern text-white relative">
+    <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+        <div class="w-64 h-64 bg-cobe-accent rounded-full blur-[100px] breath-circle"></div>
+    </div>
     <div class="flex-grow flex flex-col justify-center items-center p-6 z-10">
-        <div class="max-w-md w-full mx-auto text-center">
-            <i data-lucide="loader-2" class="w-16 h-16 text-cobe-accent animate-spin mx-auto mb-8"></i>
-            <h2 id="loading-text" class="text-3xl md:text-4xl font-serif font-bold text-cobe-cream transition-opacity duration-500 opacity-100">
+        <div class="max-w-md w-full mx-auto text-center relative">
+            <h2 id="loading-text" class="text-2xl md:text-3xl font-serif font-bold text-cobe-cream transition-opacity duration-1000 opacity-100 leading-relaxed">
                 Analyzing your responses...
             </h2>
         </div>
@@ -230,30 +255,36 @@
 </section>
 
 <!-- ══════════════════════════════════ CAPTURE SCREEN ══════════════════════════════════ -->
-<section id="screen-capture" class="screen bg-cobe-light">
-    <header class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+<section id="screen-capture" class="screen bg-cobe-light dark:bg-cobe-black">
+    <header class="bg-white dark:bg-cobe-dark border-b border-gray-200 dark:border-white/10 py-4 px-6 sticky top-0 z-50 transition-colors duration-300">
         <div class="max-w-4xl mx-auto flex items-center justify-between gap-4 md:gap-8">
-            <div class="font-serif font-bold text-lg text-cobe-black">COBE<span class="text-cobe-accent">.</span></div>
+            <div class="font-serif font-bold text-lg text-cobe-black dark:text-white">COBE<span class="text-cobe-accent">.</span></div>
             <div class="flex-grow">
-                <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-1.5 w-full bg-gray-100 dark:bg-black/50 rounded-full overflow-hidden">
                     <div class="h-full bg-cobe-rust transition-all duration-500" style="width:100%"></div>
                 </div>
                 <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right mt-2">Assessment Complete</div>
             </div>
-            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black transition-colors focus:outline-none">Exit</button>
+            <div class="flex items-center gap-6">
+                <button onclick="toggleTheme()" class="text-gray-400 hover:text-cobe-accent transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+                    <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
+                </button>
+                <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black dark:hover:text-white transition-colors focus:outline-none">Exit</button>
+            </div>
         </div>
     </header>
 
     <div class="flex-grow flex flex-col justify-center py-12 px-4 sm:px-6">
-        <div class="max-w-xl mx-auto w-full bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 animate-fade-up">
+        <div class="max-w-xl mx-auto w-full bg-white dark:bg-[#1f1f1f] p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 dark:border-white/5 animate-fade-up transition-colors duration-300">
             
             <div class="w-16 h-16 bg-cobe-accent/10 text-cobe-accent rounded-full flex items-center justify-center mx-auto mb-6">
                 <i data-lucide="file-check" class="w-8 h-8"></i>
             </div>
             
-            <h2 class="font-serif text-3xl md:text-4xl font-bold text-cobe-black text-center mb-4">Your Excellence Tax™ profile is ready.</h2>
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-cobe-black dark:text-white text-center mb-4">Your Excellence Tax™ profile is ready.</h2>
             
-            <p class="text-sm text-cobe-muted text-center leading-relaxed mb-6">
+            <p class="text-sm text-cobe-muted dark:text-gray-400 text-center leading-relaxed mb-6">
                 We have analyzed your responses and identified your primary extraction zone. Enter your professional email below to unlock your score and reveal your highest taxing area.
             </p>
 
@@ -264,32 +295,22 @@
                     <div data-style="clean">
                         <ul class="formkit-alert formkit-alert-error" data-element="errors" data-group="alert"></ul>
                         <div data-element="fields" data-stacked="false" class="seva-fields formkit-fields">
-                            <div class="formkit-field">
-                                <input class="formkit-input" aria-label="First Name" name="fields[first_name]" required="" placeholder="First Name" type="text" style="color: rgb(0, 0, 0); border-color: rgb(227, 227, 227); border-radius: 4px; font-weight: 400;">
-                            </div>
-                            <div class="formkit-field">
-                                <input class="formkit-input" name="email_address" aria-label="Email Address" placeholder="Email Address" required="" type="email" style="color: rgb(0, 0, 0); border-color: rgb(227, 227, 227); border-radius: 4px; font-weight: 400;">
-                            </div>
-                            <button data-element="submit" class="formkit-submit formkit-submit" style="color: rgb(255, 255, 255); background-color: rgb(22, 119, 190); border-radius: 4px; font-weight: 400;">
-                                <div class="formkit-spinner"><div></div><div></div><div></div></div>
-                                <span class="">View My Results</span>
-                            </button>
+                            <div class="formkit-field"><input class="formkit-input" aria-label="First Name" name="fields[first_name]" required="" placeholder="First Name" type="text"></div>
+                            <div class="formkit-field"><input class="formkit-input" name="email_address" aria-label="Email Address" placeholder="Email Address" required="" type="email"></div>
+                            <button data-element="submit" class="formkit-submit formkit-submit"><div class="formkit-spinner"><div></div><div></div><div></div></div><span class="">View My Results</span></button>
                         </div>
                     </div>
-                    <style>
-                        .formkit-form[data-uid="afbb91101f"] *{box-sizing:border-box;}.formkit-form[data-uid="afbb91101f"]{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}.formkit-form[data-uid="afbb91101f"] legend{border:none;font-size:inherit;margin-bottom:10px;padding:0;position:relative;display:table;}.formkit-form[data-uid="afbb91101f"] fieldset{border:0;padding:0.01em 0 0 0;margin:0;min-width:0;}.formkit-form[data-uid="afbb91101f"] body:not(:-moz-handler-blocked) fieldset{display:table-cell;}.formkit-form[data-uid="afbb91101f"] h1,.formkit-form[data-uid="afbb91101f"] h2,.formkit-form[data-uid="afbb91101f"] h3,.formkit-form[data-uid="afbb91101f"] h4,.formkit-form[data-uid="afbb91101f"] h5,.formkit-form[data-uid="afbb91101f"] h6{color:inherit;font-size:inherit;font-weight:inherit;}.formkit-form[data-uid="afbb91101f"] h2{font-size:1.5em;margin:1em 0;}.formkit-form[data-uid="afbb91101f"] h3{font-size:1.17em;margin:1em 0;}.formkit-form[data-uid="afbb91101f"] p{color:inherit;font-size:inherit;font-weight:inherit;}.formkit-form[data-uid="afbb91101f"] ol:not([template-default]),.formkit-form[data-uid="afbb91101f"] ul:not([template-default]),.formkit-form[data-uid="afbb91101f"] blockquote:not([template-default]){text-align:left;}.formkit-form[data-uid="afbb91101f"] p:not([template-default]),.formkit-form[data-uid="afbb91101f"] hr:not([template-default]),.formkit-form[data-uid="afbb91101f"] blockquote:not([template-default]),.formkit-form[data-uid="afbb91101f"] ol:not([template-default]),.formkit-form[data-uid="afbb91101f"] ul:not([template-default]){color:inherit;font-style:initial;}.formkit-form[data-uid="afbb91101f"] .ordered-list,.formkit-form[data-uid="afbb91101f"] .unordered-list{list-style-position:outside !important;padding-left:1em;}.formkit-form[data-uid="afbb91101f"] .list-item{padding-left:0;}.formkit-form[data-uid="afbb91101f"][data-format="modal"]{display:none;}.formkit-form[data-uid="afbb91101f"][data-format="slide in"]{display:none;}.formkit-form[data-uid="afbb91101f"][data-format="sticky bar"]{display:none;}.formkit-sticky-bar .formkit-form[data-uid="afbb91101f"][data-format="sticky bar"]{display:block;}.formkit-form[data-uid="afbb91101f"] .formkit-input,.formkit-form[data-uid="afbb91101f"] .formkit-select,.formkit-form[data-uid="afbb91101f"] .formkit-checkboxes{width:100%;}.formkit-form[data-uid="afbb91101f"] .formkit-button,.formkit-form[data-uid="afbb91101f"] .formkit-submit{border:0;border-radius:5px;color:#ffffff;cursor:pointer;display:inline-block;text-align:center;font-size:15px;font-weight:500;cursor:pointer;margin-bottom:15px;overflow:hidden;padding:0;position:relative;vertical-align:middle;}.formkit-form[data-uid="afbb91101f"] .formkit-button:hover,.formkit-form[data-uid="afbb91101f"] .formkit-submit:hover,.formkit-form[data-uid="afbb91101f"] .formkit-button:focus,.formkit-form[data-uid="afbb91101f"] .formkit-submit:focus{outline:none;}.formkit-form[data-uid="afbb91101f"] .formkit-button:hover > span,.formkit-form[data-uid="afbb91101f"] .formkit-submit:hover > span,.formkit-form[data-uid="afbb91101f"] .formkit-button:focus > span,.formkit-form[data-uid="afbb91101f"] .formkit-submit:focus > span{background-color:rgba(0,0,0,0.1);}.formkit-form[data-uid="afbb91101f"] .formkit-button > span,.formkit-form[data-uid="afbb91101f"] .formkit-submit > span{display:block;-webkit-transition:all 300ms ease-in-out;transition:all 300ms ease-in-out;padding:12px 24px;}.formkit-form[data-uid="afbb91101f"] .formkit-input{background:#ffffff;font-size:15px;padding:12px;border:1px solid #e3e3e3;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;line-height:1.4;margin:0;-webkit-transition:border-color ease-out 300ms;transition:border-color ease-out 300ms;}.formkit-form[data-uid="afbb91101f"] .formkit-input:focus{outline:none;border-color:#1677be;-webkit-transition:border-color ease 300ms;transition:border-color ease 300ms;}.formkit-form[data-uid="afbb91101f"] .formkit-input::-webkit-input-placeholder{color:inherit;opacity:0.8;}.formkit-form[data-uid="afbb91101f"] .formkit-input::-moz-placeholder{color:inherit;opacity:0.8;}.formkit-form[data-uid="afbb91101f"] .formkit-input:-ms-input-placeholder{color:inherit;opacity:0.8;}.formkit-form[data-uid="afbb91101f"] .formkit-input::placeholder{color:inherit;opacity:0.8;}.formkit-form[data-uid="afbb91101f"] [data-group="dropdown"]{position:relative;display:inline-block;width:100%;}.formkit-form[data-uid="afbb91101f"] [data-group="dropdown"]::before{content:"";top:calc(50% - 2.5px);right:10px;position:absolute;pointer-events:none;border-color:#4f4f4f transparent transparent transparent;border-style:solid;border-width:6px 6px 0 6px;height:0;width:0;z-index:999;}.formkit-form[data-uid="afbb91101f"] [data-group="dropdown"] select{height:auto;width:100%;cursor:pointer;color:#333333;line-height:1.4;margin-bottom:0;padding:0 6px;-webkit-appearance:none;-moz-appearance:none;appearance:none;font-size:15px;padding:12px;padding-right:25px;border:1px solid #e3e3e3;background:#ffffff;}.formkit-form[data-uid="afbb91101f"] [data-group="dropdown"] select:focus{outline:none;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"]{text-align:left;margin:0;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"]{margin-bottom:10px;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] *{cursor:pointer;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"]:last-of-type{margin-bottom:0;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]{display:none;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"] + label::after{content:none;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]:checked + label::after{border-color:#ffffff;content:"";}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] input[type="checkbox"]:checked + label::before{background:#10bf7a;border-color:#10bf7a;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] label{position:relative;display:inline-block;padding-left:28px;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] label::before,.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] label::after{position:absolute;content:"";display:inline-block;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] label::before{height:16px;width:16px;border:1px solid #e3e3e3;background:#ffffff;left:0px;top:3px;}.formkit-form[data-uid="afbb91101f"] [data-group="checkboxes"] [data-group="checkbox"] label::after{height:4px;width:8px;border-left:2px solid #4d4d4d;border-bottom:2px solid #4d4d4d;-webkit-transform:rotate(-45deg);-ms-transform:rotate(-45deg);transform:rotate(-45deg);left:4px;top:8px;}.formkit-form[data-uid="afbb91101f"] .formkit-alert{background:#f9fafb;border:1px solid #e3e3e3;border-radius:5px;-webkit-flex:1 0 auto;-ms-flex:1 0 auto;flex:1 0 auto;list-style:none;margin:25px auto;padding:12px;text-align:center;width:100%;}.formkit-form[data-uid="afbb91101f"] .formkit-alert:empty{display:none;}.formkit-form[data-uid="afbb91101f"] .formkit-alert-success{background:#d3fbeb;border-color:#10bf7a;color:#0c905c;}.formkit-form[data-uid="afbb91101f"] .formkit-alert-error{background:#fde8e2;border-color:#f2643b;color:#ea4110;}.formkit-form[data-uid="afbb91101f"] .formkit-spinner{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;height:0px;width:0px;margin:0 auto;position:absolute;top:0;left:0;right:0;width:0px;overflow:hidden;text-align:center;-webkit-transition:all 300ms ease-in-out;transition:all 300ms ease-in-out;}.formkit-form[data-uid="afbb91101f"] .formkit-spinner > div{margin:auto;width:12px;height:12px;background-color:#fff;opacity:0.3;border-radius:100%;display:inline-block;-webkit-animation:formkit-bouncedelay-formkit-form-data-uid-afbb91101f- 1.4s infinite ease-in-out both;animation:formkit-bouncedelay-formkit-form-data-uid-afbb91101f- 1.4s infinite ease-in-out both;}.formkit-form[data-uid="afbb91101f"] .formkit-spinner > div:nth-child(1){-webkit-animation-delay:-0.32s;animation-delay:-0.32s;}.formkit-form[data-uid="afbb91101f"] .formkit-spinner > div:nth-child(2){-webkit-animation-delay:-0.16s;animation-delay:-0.16s;}.formkit-form[data-uid="afbb91101f"] .formkit-submit[data-active] .formkit-spinner{opacity:1;height:100%;width:50px;}.formkit-form[data-uid="afbb91101f"] .formkit-submit[data-active] .formkit-spinner ~ span{opacity:0;}.formkit-form[data-uid="afbb91101f"] .formkit-powered-by[data-active="false"]{opacity:0.35;}.formkit-form[data-uid="afbb91101f"] .formkit-powered-by-convertkit-container{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;width:100%;margin:10px 0;position:relative;}.formkit-form[data-uid="afbb91101f"] .formkit-powered-by-convertkit-container[data-active="false"]{opacity:0.35;}.formkit-form[data-uid="afbb91101f"] .formkit-powered-by-convertkit{-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;background-color:#ffffff;border-radius:9px;color:#3d3d3d;cursor:pointer;display:block;height:36px;margin:0 auto;opacity:0.95;padding:0;-webkit-text-decoration:none;text-decoration:none;text-indent:100%;-webkit-transition:ease-in-out all 200ms;transition:ease-in-out all 200ms;white-space:nowrap;overflow:hidden;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;width:157px;background-repeat:no-repeat;background-position:center;background-image:url("data:image/svg+xml;charset=utf8,%3Csvg width='133' height='36' viewBox='0 0 133 36' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0.861 25.5C0.735 25.5 0.651 25.416 0.651 25.29V10.548C0.651 10.422 0.735 10.338 0.861 10.338H6.279C9.072 10.338 10.668 11.451 10.668 13.824C10.668 15.819 9.219 16.932 8.001 17.226C7.707 17.268 7.707 17.625 8.022 17.688C9.912 18.108 11.088 19.116 11.088 21.321C11.088 23.715 9.429 25.5 6.426 25.5H0.861ZM5.397 23.085C6.825 23.085 7.518 22.224 7.518 21.006C7.518 19.683 6.825 18.948 5.397 18.948H4.2V23.085H5.397ZM5.313 16.617C6.51 16.617 7.245 15.945 7.245 14.601C7.245 13.383 6.51 12.753 5.25 12.753H4.2V16.617H5.313ZM17.9758 23.883C17.9758 23.568 17.6608 23.505 17.5348 23.799C17.0308 24.954 16.1698 25.731 14.5528 25.731C12.8728 25.731 12.0958 24.471 12.0958 22.707V14.937C12.0958 14.811 12.1798 14.727 12.3058 14.727H15.2248C15.3508 14.727 15.4348 14.811 15.4348 14.937V21.657C15.4348 22.581 15.7708 23.022 16.4638 23.022C17.1778 23.022 17.6188 22.581 17.6188 21.657V14.937C17.6188 14.811 17.7028 14.727 17.8288 14.727H20.7478C20.8738 14.727 20.9578 14.811 20.9578 14.937V25.29C20.9578 25.416 20.8738 25.5 20.7478 25.5H18.1858C18.0598 25.5 17.9758 25.416 17.9758 25.29V23.883ZM25.6141 25.29C25.6141 25.416 25.5301 25.5 25.4041 25.5H22.4851C22.3591 25.5 22.2751 25.416 22.2751 25.29V14.937C22.2751 14.811 22.3591 14.727 22.4851 14.727H25.4041C25.5301 14.727 25.6141 14.811 25.6141 14.937V25.29ZM23.9131 13.74C22.8001 13.74 22.0441 12.942 22.0441 11.934C22.0441 10.926 22.8001 10.107 23.9131 10.107C25.0051 10.107 25.7611 10.926 25.7611 11.934C25.7611 12.942 25.0051 13.74 23.9131 13.74ZM26.7883 10.548C26.7883 10.422 26.8723 10.338 26.9983 10.338H29.9173C30.0433 10.338 30.1273 10.422 30.1273 10.548V22.056C30.1273 22.749 30.2533 23.085 30.8203 23.085C31.0093 23.085 31.1983 23.043 31.3663 23.001C31.5133 22.959 31.6183 22.959 31.6183 23.127V25.059C31.6183 25.164 31.5763 25.269 31.4923 25.311C30.9673 25.521 30.2953 25.71 29.5813 25.71C27.7123 25.71 26.7883 24.639 26.7883 22.476V10.548ZM32.4237 14.727C32.8227 14.727 32.9277 14.538 32.9697 14.055L33.1167 12.039C33.1167 11.913 33.2217 11.829 33.3477 11.829H35.8887C36.0147 11.829 36.0987 11.913 36.0987 12.039V14.517C36.0987 14.643 36.1827 14.727 36.3087 14.727H38.2827C38.4087 14.727 38.4927 14.811 38.4927 14.937V16.659C38.4927 16.785 38.4087 16.869 38.2827 16.869H36.0777V22.056C36.0777 22.875 36.5397 23.085 37.0647 23.085C37.4847 23.085 37.9467 22.938 38.3247 22.707C38.4717 22.623 38.5767 22.665 38.5767 22.833V24.828C38.5767 24.933 38.5347 25.017 38.4507 25.08C37.8417 25.458 36.9807 25.71 36.0357 25.71C34.2927 25.71 32.7387 24.912 32.7387 22.476V16.869H31.8567C31.7307 16.869 31.6467 16.785 31.6467 16.659V14.937C31.6467 14.811 31.7307 14.727 31.8567 14.727H32.4237ZM51.3808 14.727C51.5068 14.727 51.5908 14.79 51.6118 14.916L52.3888 19.851L52.5778 21.174C52.6198 21.468 52.9558 21.468 52.9768 21.174C53.0398 20.712 53.0818 20.271 53.1658 19.83L53.8798 14.916C53.9008 14.79 53.9848 14.727 54.1108 14.727H56.6728C56.8198 14.727 56.8828 14.811 56.8618 14.958L54.6778 25.311C54.6568 25.437 54.5728 25.5 54.4468 25.5H51.3178C51.1918 25.5 51.1078 25.437 51.0868 25.311L50.1208 20.082L49.8898 18.633C49.8688 18.444 49.6588 18.444 49.6378 18.633L49.4068 20.103L48.5458 25.311C48.5248 25.437 48.4408 25.5 48.3148 25.5H45.2068C45.0808 25.5 44.9968 25.437 44.9758 25.311L42.8128 14.958C42.7918 14.811 42.8548 14.727 43.0018 14.727H45.9628C46.0888 14.727 46.1728 14.79 46.1938 14.916L46.9288 19.83C47.0128 20.271 47.0758 20.754 47.1388 21.195C47.2018 21.51 47.4748 21.531 47.5378 21.195L47.7478 19.872L48.6088 14.916C48.6298 14.79 48.7138 14.727 48.8398 14.727H51.3808ZM61.1582 25.29C61.1582 25.416 61.0742 25.5 60.9482 25.5H58.0292C57.9032 25.5 57.8192 25.416 57.8192 25.29V14.937C57.8192 14.811 57.9032 14.727 58.0292 14.727H60.9482C61.0742 14.727 61.1582 14.811 61.1582 14.937V25.29ZM59.4572 13.74C58.3442 13.74 57.5882 12.942 57.5882 11.934C57.5882 10.926 58.3442 10.107 59.4572 10.107C60.5492 10.107 61.3052 10.926 61.3052 11.934C61.3052 12.942 60.5492 13.74 59.4572 13.74ZM62.8154 14.727C63.2144 14.727 63.3194 14.538 63.3614 14.055L63.5084 12.039C63.5084 11.913 63.6134 11.829 63.7394 11.829H66.2804C66.4064 11.829 66.4904 11.913 66.4904 12.039V14.517C66.4904 14.643 66.5744 14.727 66.7004 14.727H68.6744C68.8004 14.727 68.8844 14.811 68.8844 14.937V16.659C68.8844 16.785 68.8004 16.869 68.6744 16.869H66.4694V22.056C66.4694 22.875 66.9314 23.085 67.4564 23.085C67.8764 23.085 68.3384 22.938 68.7164 22.707C68.8634 22.623 68.9684 22.665 68.9684 22.833V24.828C68.9684 24.933 68.9264 25.017 68.8424 25.08C68.2334 25.458 67.3724 25.71 66.4274 25.71C64.6844 25.71 63.1304 24.912 63.1304 22.476V16.869H62.2484C62.1224 16.869 62.0384 16.785 62.0384 16.659V14.937C62.0384 14.811 62.1224 14.727 62.2484 14.727H62.8154ZM73.4298 16.323C73.4298 16.638 73.7868 16.68 73.9128 16.407C74.3748 15.315 75.1308 14.496 76.6008 14.496C78.2178 14.496 78.9528 15.609 78.9528 17.373V25.29C78.9528 25.416 78.8688 25.5 78.7428 25.5H75.8238C75.6978 25.5 75.6138 25.416 75.6138 25.29V18.633C75.6138 17.709 75.2778 17.268 74.5848 17.268C73.8708 17.268 73.4298 17.709 73.4298 18.633V25.29C73.4298 25.416 73.3458 25.5 73.2198 25.5H70.3008C70.1748 25.5 70.0908 25.416 70.0908 25.29V10.548C70.0908 10.422 70.1748 10.338 70.3008 10.338H73.2198C73.3458 10.338 73.4298 10.422 73.4298 10.548V16.323Z' fill='%231E1E1E'/%3E%3Cpath d='M100.132 16.3203C105.58 17.3761 107.272 22.4211 107.318 27.4961C107.318 27.6101 107.226 27.7041 107.112 27.7041H100.252C100.138 27.7041 100.046 27.6121 100.046 27.5001C100.026 23.5629 99.3877 20.0896 95.4865 19.9396C95.3705 19.9356 95.2725 20.0276 95.2725 20.1456V27.5001C95.2725 27.6141 95.1806 27.7061 95.0666 27.7061H88.206C88.092 27.7061 88 27.6141 88 27.5001V8.75585C88 8.64187 88.092 8.54989 88.206 8.54989H95.0686C95.1826 8.54989 95.2745 8.64187 95.2745 8.75585V15.7764C95.2745 15.8804 95.3585 15.9644 95.4625 15.9644C95.5445 15.9644 95.6185 15.9104 95.6425 15.8324C97.4081 10.0416 100.709 8.58588 106.07 8.55189C106.184 8.55189 106.276 8.64387 106.276 8.75785V15.7604C106.276 15.8744 106.184 15.9664 106.07 15.9664H100.166C100.066 15.9664 99.9856 16.0464 99.9856 16.1464C99.9856 16.2304 100.048 16.3043 100.132 16.3203ZM118.918 20.7095V16.1704C118.918 16.0564 119.01 15.9644 119.124 15.9644H124.173C124.273 15.9644 124.353 15.8844 124.353 15.7844C124.353 15.6985 124.291 15.6245 124.207 15.6085C120.256 14.8246 118.432 12.5511 118.37 8.75585C118.368 8.64387 118.458 8.54989 118.572 8.54989H125.986C126.1 8.54989 126.192 8.64187 126.192 8.75585V11.9532C126.192 12.0672 126.284 12.1592 126.398 12.1592H130.649C130.763 12.1592 130.855 12.2511 130.855 12.3651V15.7624C130.855 15.8764 130.763 15.9684 130.649 15.9684H126.398C126.284 15.9684 126.192 16.0604 126.192 16.1744V19.8356C126.192 21.1294 126.986 21.5553 128.04 21.5553C129.692 21.5553 131.323 20.8114 131.977 20.4735C132.113 20.4035 132.277 20.5015 132.277 20.6555V26.3543C132.277 26.5063 132.193 26.6463 132.059 26.7183C131.413 27.0582 129.418 28 127.136 28C122.435 27.996 118.918 26.0824 118.918 20.7095ZM109.266 27.4981V16.1704C109.266 16.0564 109.358 15.9644 109.472 15.9644H116.334C116.448 15.9644 116.54 16.0564 116.54 16.1704V27.4981C116.54 27.6121 116.448 27.7041 116.334 27.7041H109.472C109.358 27.7021 109.266 27.6101 109.266 27.4981ZM108.876 11.4913C108.876 13.4189 110.238 14.9826 112.853 14.9826C115.469 14.9826 116.83 13.4189 116.83 11.4913C116.83 9.56369 115.471 8 112.853 8C110.238 8 108.876 9.56369 108.876 11.4913Z' fill='white'/%3E%3C/svg%3E");}@-webkit-keyframes formkit-bouncedelay-formkit-form-data-uid-afbb91101f-{0%,80%,100%{-webkit-transform:scale(0);-ms-transform:scale(0);transform:scale(0);}40%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}}@keyframes formkit-bouncedelay-formkit-form-data-uid-afbb91101f-{0%,80%,100%{-webkit-transform:scale(0);-ms-transform:scale(0);transform:scale(0);}40%{-webkit-transform:scale(1);-ms-transform:scale(1);transform:scale(1);}}.formkit-form[data-uid="afbb91101f"] blockquote{padding:10px 20px;margin:0 0 20px;border-left:5px solid #e1e1e1;}.formkit-form[data-uid="afbb91101f"] .seva-custom-content{padding:15px;font-size:16px;color:#fff;mix-blend-mode:difference;}.formkit-form[data-uid="afbb91101f"] .formkit-modal.guard{max-width:420px;width:100%;} .formkit-form[data-uid="afbb91101f"]{max-width:700px;}.formkit-form[data-uid="afbb91101f"] [data-style="clean"]{width:100%;}.formkit-form[data-uid="afbb91101f"] .formkit-fields{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-wrap:wrap;-ms-flex-wrap:wrap;flex-wrap:wrap;margin:0 auto;}.formkit-form[data-uid="afbb91101f"] .formkit-field,.formkit-form[data-uid="afbb91101f"] .formkit-submit{margin:0 0 15px 0;-webkit-flex:1 0 100%;-ms-flex:1 0 100%;flex:1 0 100%;}.formkit-form[data-uid="afbb91101f"] .formkit-powered-by-convertkit-container{margin:0;}.formkit-form[data-uid="afbb91101f"] .formkit-submit{position:static;}.formkit-form[data-uid="afbb91101f"][min-width~="700"] [data-style="clean"],.formkit-form[data-uid="afbb91101f"][min-width~="800"] [data-style="clean"]{padding:10px;padding-top:56px;}.formkit-form[data-uid="afbb91101f"][min-width~="700"] .formkit-fields[data-stacked="false"],.formkit-form[data-uid="afbb91101f"][min-width~="800"] .formkit-fields[data-stacked="false"]{margin-left:-5px;margin-right:-5px;}.formkit-form[data-uid="afbb91101f"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-field,.formkit-form[data-uid="afbb91101f"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-field,.formkit-form[data-uid="afbb91101f"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-submit,.formkit-form[data-uid="afbb91101f"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-submit{margin:0 5px 15px 5px;}.formkit-form[data-uid="afbb91101f"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-field,.formkit-form[data-uid="afbb91101f"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-field{-webkit-flex:100 1 auto;-ms-flex:100 1 auto;flex:100 1 auto;}.formkit-form[data-uid="afbb91101f"][min-width~="700"] .formkit-fields[data-stacked="false"] .formkit-submit,.formkit-form[data-uid="afbb91101f"][min-width~="800"] .formkit-fields[data-stacked="false"] .formkit-submit{-webkit-flex:1 1 auto;-ms-flex:1 1 auto;flex:1 1 auto;} </style>
                 </form>
             </div>
 
-            <div class="mt-8">
-                <button onclick="prevQuestion(); showScreen('screen-assessment');" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black transition-colors focus:outline-none flex items-center justify-center w-full">
+            <p class="text-[11px] text-gray-500 font-bold uppercase tracking-widest text-center mt-4 mb-8">
+                Join 1,000+ Black professionals who have used this data to reclaim their workplace boundaries. 100% free. Unsubscribe anytime.
+            </p>
+            <div class="border-t border-gray-100 dark:border-white/10 pt-6">
+                <button onclick="prevQuestion(); showScreen('screen-assessment');" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black dark:hover:text-white transition-colors focus:outline-none flex items-center justify-center w-full">
                     &larr; Back to Assessment
                 </button>
             </div>
-
-            <p class="text-[11px] text-gray-400 text-center mt-8 leading-relaxed">
-                By continuing you agree to receive your results and research updates from COBE. We will never share your data. You can unsubscribe at any time.
-            </p>
         </div>
     </div>
 </section>
@@ -299,9 +320,14 @@
     <header class="border-b border-white/10 py-4 px-6 bg-black/20 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-5xl mx-auto flex items-center justify-between">
             <div class="font-serif font-bold text-lg text-white">COBE<span class="text-cobe-accent">.</span></div>
-            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors focus:outline-none">
-                Start Again
-            </button>
+            <div class="flex items-center gap-4 md:gap-6">
+                <button onclick="copyResultsLink()" id="copy-link-btn" class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-cobe-accent hover:text-white transition-colors focus:outline-none flex items-center">
+                    <i data-lucide="link" class="w-3 h-3 md:w-4 md:h-4 mr-1.5"></i> <span class="hidden sm:inline">Save Link</span><span class="sm:hidden">Save</span>
+                </button>
+                <button onclick="goLanding()" class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors focus:outline-none">
+                    Start Again
+                </button>
+            </div>
         </div>
     </header>
 
@@ -313,93 +339,56 @@
 </section>
 
 <!-- ══════════════════════════════════ CORPORATE SCREEN ══════════════════════════════════ -->
-<section id="screen-corporate" class="screen bg-cobe-light text-cobe-black">
-    <header class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+<section id="screen-corporate" class="screen bg-cobe-light dark:bg-cobe-black text-cobe-black dark:text-cobe-cream transition-colors duration-300">
+    <header class="bg-white dark:bg-cobe-dark border-b border-gray-200 dark:border-white/10 py-4 px-6 sticky top-0 z-50 transition-colors duration-300">
         <div class="max-w-5xl mx-auto flex items-center justify-between">
-            <div class="font-serif font-bold text-lg text-cobe-black">COBE<span class="text-cobe-accent">.</span></div>
-            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black transition-colors focus:outline-none">
-                &larr; Back
-            </button>
+            <div class="font-serif font-bold text-lg text-cobe-black dark:text-white">COBE<span class="text-cobe-accent">.</span></div>
+            <div class="flex items-center gap-6">
+                <button onclick="toggleTheme()" class="text-gray-400 hover:text-cobe-accent transition-colors focus:outline-none" aria-label="Toggle Dark Mode">
+                    <i data-lucide="moon" class="w-4 h-4 hidden dark:block"></i>
+                    <i data-lucide="sun" class="w-4 h-4 block dark:hidden"></i>
+                </button>
+                <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black dark:hover:text-white transition-colors focus:outline-none">
+                    &larr; Back
+                </button>
+            </div>
         </div>
     </header>
 
     <div class="flex-grow py-16 px-4 sm:px-6">
         <div class="max-w-4xl mx-auto animate-fade-up">
-            
             <div class="text-center mb-16">
                 <span class="text-cobe-rust font-bold tracking-[0.2em] uppercase text-[11px] mb-4 block">For Organisations</span>
-                <h2 class="text-3xl md:text-5xl font-serif font-bold text-cobe-black mb-6 leading-tight">
+                <h2 class="text-3xl md:text-5xl font-serif font-bold text-cobe-black dark:text-white mb-6 leading-tight">
                     The Excellence Tax™ is operating in your workplace right now.
                 </h2>
-                <p class="text-cobe-muted text-lg max-w-2xl mx-auto leading-relaxed">
+                <p class="text-cobe-muted dark:text-gray-400 text-lg max-w-2xl mx-auto leading-relaxed">
                     The question is no longer whether extraction exists. The research proves it does. The question is whether you act — or continue to extract.
                 </p>
             </div>
 
             <!-- Stats -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-                <div class="bg-white border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm">
-                    <div class="font-serif text-4xl font-bold text-cobe-black mb-3">86%</div>
-                    <div class="text-sm text-cobe-muted leading-relaxed">of Black professionals work harder than colleagues just to be seen as competent</div>
+                <div class="bg-white dark:bg-white/5 border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm dark:shadow-none transition-colors">
+                    <div class="font-serif text-4xl font-bold text-cobe-black dark:text-white mb-3">86%</div>
+                    <div class="text-sm text-cobe-muted dark:text-gray-400 leading-relaxed">of Black professionals work harder than colleagues just to be seen as competent</div>
                 </div>
-                <div class="bg-white border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm">
-                    <div class="font-serif text-4xl font-bold text-cobe-black mb-3">91%</div>
-                    <div class="text-sm text-cobe-muted leading-relaxed">have reached breaking point where leaving became a survival strategy</div>
+                <div class="bg-white dark:bg-white/5 border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm dark:shadow-none transition-colors">
+                    <div class="font-serif text-4xl font-bold text-cobe-black dark:text-white mb-3">91%</div>
+                    <div class="text-sm text-cobe-muted dark:text-gray-400 leading-relaxed">have reached breaking point where leaving became a survival strategy</div>
                 </div>
-                <div class="bg-white border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm">
-                    <div class="font-serif text-4xl font-bold text-cobe-black mb-3">£166k</div>
-                    <div class="text-sm text-cobe-muted leading-relaxed">average replacement cost per senior Black professional lost to extraction</div>
-                </div>
-            </div>
-
-            <!-- Services -->
-            <div class="bg-white rounded-3xl border border-gray-200 p-8 md:p-12 shadow-sm mb-16">
-                <h3 class="font-serif text-2xl font-bold text-cobe-black mb-8 border-b border-gray-100 pb-4">Corporate Engagements</h3>
-                
-                <div class="space-y-6">
-                    <div class="flex gap-6 group">
-                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">01</div>
-                        <div class="pb-6 border-b border-gray-100 flex-grow">
-                            <h4 class="font-bold text-cobe-black text-lg mb-2">Excellence Tax™ Organisational Audit</h4>
-                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">A full diagnostic mapping which of the 15 taxes your organisation imposes, on whom, and at what cost. Evidence-based. Framework-led.</p>
-                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">From £50,000</span>
-                        </div>
-                    </div>
-                    <div class="flex gap-6 group">
-                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">02</div>
-                        <div class="pb-6 border-b border-gray-100 flex-grow">
-                            <h4 class="font-bold text-cobe-black text-lg mb-2">Corporate Keynote & Briefing</h4>
-                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">Research-led speaking for leadership teams, board sessions, and all-staff events. Named by senior leaders as "the briefing that changed the conversation."</p>
-                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">From £3,000</span>
-                        </div>
-                    </div>
-                    <div class="flex gap-6 group">
-                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">03</div>
-                        <div class="pb-6 border-b border-gray-100 flex-grow">
-                            <h4 class="font-bold text-cobe-black text-lg mb-2">Sector Intelligence Report</h4>
-                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">Quarterly deep-dive into Excellence Tax™ patterns across your sector — healthcare, education, law, construction, tech. Benchmarking and accountability data.</p>
-                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">From £5,000 per report</span>
-                        </div>
-                    </div>
-                    <div class="flex gap-6 group">
-                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">04</div>
-                        <div>
-                            <h4 class="font-bold text-cobe-black text-lg mb-2">CCTP™ Licensing Programme</h4>
-                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">Train your internal HR and DEI team as Certified Excellence Tax™ Practitioners. Build in-house capacity to identify, measure, and eliminate extraction.</p>
-                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">Enquire for licensing fee</span>
-                        </div>
-                    </div>
+                <div class="bg-white dark:bg-white/5 border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm dark:shadow-none transition-colors">
+                    <div class="font-serif text-4xl font-bold text-cobe-black dark:text-white mb-3">£166k</div>
+                    <div class="text-sm text-cobe-muted dark:text-gray-400 leading-relaxed">average replacement cost per senior Black professional lost to extraction</div>
                 </div>
             </div>
 
             <!-- Contact Form Replacement (Less Annoying CRM Embed) -->
             <div class="bg-cobe-black text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
                 <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-cobe-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
-                
                 <div class="relative z-10">
                     <h3 class="font-serif text-3xl font-bold mb-2">Request a consultation</h3>
                     <p class="text-gray-400 text-sm mb-10">All enquiries are treated in confidence. We respond within two business days.</p>
-                    
                     <div class="bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-3xl mt-8">
                         <blockquote class="lacrm-embed" data-embed-height="650" data-embed-show-header="false">
                             <a href="https://forms.lessannoyingcrm.com/view/4086390344669997000592539379726">Corporate Engagements</a>
@@ -415,116 +404,37 @@
 
 <!-- ══════════════════════════════════ JAVASCRIPT LOGIC ══════════════════════════════════ -->
 <script>
+// Theme Management Logic
+function toggleTheme() {
+    if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+    } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+    }
+}
+
 // Icon Initialization
 if (typeof lucide !== 'undefined') { lucide.createIcons(); }
 
 // Database
 const TAXES = [
-  {
-    id: 'proof', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20',
-    title: 'Proof Burden',
-    context: 'Black professionals repeatedly demonstrate competence that colleagues have granted automatically — regardless of qualifications or track record.',
-    question: 'How often do you over-prepare, re-explain your credentials, or work harder simply to establish basic credibility?',
-    options: ['Rarely or never', 'Occasionally — a few times a year', 'Regularly — most months', 'Frequently — most weeks', 'Always — it is a constant requirement']
-  },
-  {
-    id: 'performance', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20',
-    title: 'Performance Load',
-    context: 'Working at 150% to receive 70% recognition. Black professionals execute at higher standards whilst appearing effortless.',
-    question: 'How often do you feel you must outperform colleagues by a significant margin just to receive equivalent recognition?',
-    options: ['Rarely or never', 'Occasionally', 'Regularly', 'Frequently', 'Always — it is the baseline expectation']
-  },
-  {
-    id: 'perfection', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20',
-    title: 'Error Intolerance',
-    context: 'A single mistake from a Black professional confirms bias. Multiple mistakes from white colleagues are attributed to circumstances.',
-    question: 'How much do you monitor yourself for errors at work, out of fear that a mistake will be weaponised or held against you in ways it would not be for others?',
-    options: ['Not at all', 'Slightly', 'Moderately', 'Significantly', 'Constantly — it creates ongoing anxiety']
-  },
-  {
-    id: 'codeswitching', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20',
-    title: 'Linguistic Modulation (Code-Switching)',
-    context: 'Adjusting language, tone, cultural references, and humour to white professional norms — multiple times a day, every day.',
-    question: 'How often do you modify how you speak, express yourself, or present your identity to make colleagues more comfortable?',
-    options: ['Rarely or never', 'Sometimes, in certain contexts', 'Regularly — in most professional settings', 'Very often', 'Constantly — it is automatic and exhausting']
-  },
-  {
-    id: 'voice', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20',
-    title: 'Voice Suppression',
-    context: 'Silencing opinions, challenges, and contributions to avoid being labelled difficult, aggressive, or a problem.',
-    question: 'How often do you hold back opinions or contributions at work because you anticipate a negative racial or gendered response?',
-    options: ['Rarely or never', 'Occasionally', 'Regularly', 'Very often', 'Constantly — it costs me professionally and personally']
-  },
-  {
-    id: 'emotion', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20',
-    title: 'Emotional Suppression',
-    context: 'Performing composure, managing others\' comfort with your presence, suppressing legitimate emotional responses in real time.',
-    question: 'How often do you suppress your genuine emotional responses at work to manage how you are perceived by others?',
-    options: ['Rarely or never', 'Sometimes', 'Regularly', 'Very often', 'Always — it has become second nature']
-  },
-  {
-    id: 'bias', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20',
-    title: 'Bias Navigation',
-    context: 'Identifying, pre-empting, and managing racialised bias in systems, processes, and decisions — as additional unpaid labour.',
-    question: 'How much of your professional energy goes into navigating racial bias within your organisation\'s systems and culture?',
-    options: ['Very little', 'Some energy', 'A noticeable amount', 'A significant amount', 'A substantial portion of my day']
-  },
-  {
-    id: 'microagg', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20',
-    title: 'Microaggression Absorption',
-    context: 'Absorbing racialised slights, dismissals, and harm — then managing the aftermath alone, in silence.',
-    question: 'How often do you experience microaggressions at work, and how much does absorbing them without acknowledgement cost you?',
-    options: ['Rarely and low cost', 'Occasionally and some cost', 'Regularly and moderate cost', 'Frequently and significant cost', 'Constantly and severe cost']
-  },
-  {
-    id: 'representation', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20',
-    title: 'Representational Burden',
-    context: 'Carrying the weight of representing your entire race. Your failures confirm bias. Your successes become the exception.',
-    question: 'How much do you feel that your actions and outcomes reflect on Black people broadly, rather than being attributed to you as an individual?',
-    options: ['Not at all', 'Slightly', 'Moderately', 'Significantly', 'Completely — it is a persistent weight']
-  },
-  {
-    id: 'threshold', category: 'Leadership Taxes', chip: 'bg-gray-200 text-gray-700 border border-gray-300',
-    title: 'Threshold Fatigue',
-    context: 'The seniority paradox. The more senior you become, the greater the burden. Advancement increases extraction rather than reducing it.',
-    question: 'As you have progressed in your career, has the weight of navigating workplace extraction increased, decreased, or stayed the same?',
-    options: ['Decreased significantly', 'Decreased somewhat', 'Stayed the same', 'Increased somewhat', 'Increased significantly — it compounds with each step']
-  },
-  {
-    id: 'sponsorship', category: 'Leadership Taxes', chip: 'bg-gray-200 text-gray-700 border border-gray-300',
-    title: 'Unresourced Sponsorship',
-    context: 'Mentoring, sponsoring, and supporting junior Black colleagues without compensation, recognition, or protected time.',
-    question: 'How much time and energy do you invest in supporting and developing other Black professionals, beyond your formal role responsibilities?',
-    options: ['Very little — it is not part of my role', 'Some — occasionally', 'A moderate amount', 'A significant amount of unpaid time', 'An enormous amount — it is a second job']
-  },
-  {
-    id: 'exposure', category: 'Leadership Taxes', chip: 'bg-gray-200 text-gray-700 border border-gray-300',
-    title: 'Exposure Without Protection',
-    context: 'Holding visibility and responsibility without the institutional protection, sponsorship, or backing granted to white peers at the same level.',
-    question: 'How often do you feel that your seniority exposes you to risk or criticism without adequate organisational protection?',
-    options: ['Rarely', 'Sometimes', 'Regularly', 'Very often', 'Always — I am visible and unprotected simultaneously']
-  },
-  {
-    id: 'evidence', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 text-cobe-dark border border-cobe-dark/20',
-    title: 'Evidence Stewardship',
-    context: 'Documenting, filing, and maintaining records of discrimination and bias — unpaid labour that organisations refuse to perform.',
-    question: 'How often do you document incidents of discrimination or bias at work, in case you need to protect yourself later?',
-    options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Constantly — it is a protective necessity']
-  },
-  {
-    id: 'infrastructure', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 text-cobe-dark border border-cobe-dark/20',
-    title: 'Infrastructure Building',
-    context: 'Creating the support structures, safe spaces, and resources that organisations should provide but do not.',
-    question: 'How much effort do you personally invest in building support networks and safe spaces for Black colleagues — work that your organisation does not do?',
-    options: ['Very little', 'Some', 'A moderate amount', 'A significant amount', 'This is constant and largely invisible unpaid labour']
-  },
-  {
-    id: 'intergenerational', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 text-cobe-dark border border-cobe-dark/20',
-    title: 'Intergenerational Load',
-    context: 'Making the path safer for those who come after — absorbing harm to protect others, carrying the weight of those who came before.',
-    question: 'To what extent do you carry the weight of responsibility for those who follow you, absorbing harm now so others may face less later?',
-    options: ['Very little', 'Somewhat', 'Moderately — I feel it', 'Significantly', 'Profoundly — it is part of who I am professionally']
-  }
+  { id: 'proof', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20', title: 'Proof Burden', context: 'Black professionals repeatedly demonstrate competence that colleagues have granted automatically — regardless of qualifications or track record.', question: 'How often do you over-prepare, re-explain your credentials, or work harder simply to establish basic credibility?', options: ['Rarely or never', 'Occasionally — a few times a year', 'Regularly — most months', 'Frequently — most weeks', 'Always — it is a constant requirement'] },
+  { id: 'performance', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20', title: 'Performance Load', context: 'Working at 150% to receive 70% recognition. Black professionals execute at higher standards whilst appearing effortless.', question: 'How often do you feel you must outperform colleagues by a significant margin just to receive equivalent recognition?', options: ['Rarely or never', 'Occasionally', 'Regularly', 'Frequently', 'Always — it is the baseline expectation'] },
+  { id: 'perfection', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20', title: 'Error Intolerance', context: 'A single mistake from a Black professional confirms bias. Multiple mistakes from white colleagues are attributed to circumstances.', question: 'How much do you monitor yourself for errors at work, out of fear that a mistake will be weaponised or held against you in ways it would not be for others?', options: ['Not at all', 'Slightly', 'Moderately', 'Significantly', 'Constantly — it creates ongoing anxiety'] },
+  { id: 'codeswitching', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20', title: 'Linguistic Modulation (Code-Switching)', context: 'Adjusting language, tone, cultural references, and humour to white professional norms — multiple times a day, every day.', question: 'How often do you modify how you speak, express yourself, or present your identity to make colleagues more comfortable?', options: ['Rarely or never', 'Sometimes, in certain contexts', 'Regularly — in most professional settings', 'Very often', 'Constantly — it is automatic and exhausting'] },
+  { id: 'voice', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20', title: 'Voice Suppression', context: 'Silencing opinions, challenges, and contributions to avoid being labelled difficult, aggressive, or a problem.', question: 'How often do you hold back opinions or contributions at work because you anticipate a negative racial or gendered response?', options: ['Rarely or never', 'Occasionally', 'Regularly', 'Very often', 'Constantly — it costs me professionally and personally'] },
+  { id: 'emotion', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20', title: 'Emotional Suppression', context: 'Performing composure, managing others\' comfort with your presence, suppressing legitimate emotional responses in real time.', question: 'How often do you suppress your genuine emotional responses at work to manage how you are perceived by others?', options: ['Rarely or never', 'Sometimes', 'Regularly', 'Very often', 'Always — it has become second nature'] },
+  { id: 'bias', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20', title: 'Bias Navigation', context: 'Identifying, pre-empting, and managing racialised bias in systems, processes, and decisions — as additional unpaid labour.', question: 'How much of your professional energy goes into navigating racial bias within your organisation\'s systems and culture?', options: ['Very little', 'Some energy', 'A noticeable amount', 'A significant amount', 'A substantial portion of my day'] },
+  { id: 'microagg', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20', title: 'Microaggression Absorption', context: 'Absorbing racialised slights, dismissals, and harm — then managing the aftermath alone, in silence.', question: 'How often do you experience microaggressions at work, and how much does absorbing them without acknowledgement cost you?', options: ['Rarely and low cost', 'Occasionally and some cost', 'Regularly and moderate cost', 'Frequently and significant cost', 'Constantly and severe cost'] },
+  { id: 'representation', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20', title: 'Representational Burden', context: 'Carrying the weight of representing your entire race. Your failures confirm bias. Your successes become the exception.', question: 'How much do you feel that your actions and outcomes reflect on Black people broadly, rather than being attributed to you as an individual?', options: ['Not at all', 'Slightly', 'Moderately', 'Significantly', 'Completely — it is a persistent weight'] },
+  { id: 'threshold', category: 'Leadership Taxes', chip: 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600', title: 'Threshold Fatigue', context: 'The seniority paradox. The more senior you become, the greater the burden. Advancement increases extraction rather than reducing it.', question: 'As you have progressed in your career, has the weight of navigating workplace extraction increased, decreased, or stayed the same?', options: ['Decreased significantly', 'Decreased somewhat', 'Stayed the same', 'Increased somewhat', 'Increased significantly — it compounds with each step'] },
+  { id: 'sponsorship', category: 'Leadership Taxes', chip: 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600', title: 'Unresourced Sponsorship', context: 'Mentoring, sponsoring, and supporting junior Black colleagues without compensation, recognition, or protected time.', question: 'How much time and energy do you invest in supporting and developing other Black professionals, beyond your formal role responsibilities?', options: ['Very little — it is not part of my role', 'Some — occasionally', 'A moderate amount', 'A significant amount of unpaid time', 'An enormous amount — it is a second job'] },
+  { id: 'exposure', category: 'Leadership Taxes', chip: 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600', title: 'Exposure Without Protection', context: 'Holding visibility and responsibility without the institutional protection, sponsorship, or backing granted to white peers at the same level.', question: 'How often do you feel that your seniority exposes you to risk or criticism without adequate organisational protection?', options: ['Rarely', 'Sometimes', 'Regularly', 'Very often', 'Always — I am visible and unprotected simultaneously'] },
+  { id: 'evidence', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 dark:bg-gray-600/30 text-cobe-dark dark:text-gray-300 border border-cobe-dark/20 dark:border-gray-500/50', title: 'Evidence Stewardship', context: 'Documenting, filing, and maintaining records of discrimination and bias — unpaid labour that organisations refuse to perform.', question: 'How often do you document incidents of discrimination or bias at work, in case you need to protect yourself later?', options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Constantly — it is a protective necessity'] },
+  { id: 'infrastructure', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 dark:bg-gray-600/30 text-cobe-dark dark:text-gray-300 border border-cobe-dark/20 dark:border-gray-500/50', title: 'Infrastructure Building', context: 'Creating the support structures, safe spaces, and resources that organisations should provide but do not.', question: 'How much effort do you personally invest in building support networks and safe spaces for Black colleagues — work that your organisation does not do?', options: ['Very little', 'Some', 'A moderate amount', 'A significant amount', 'This is constant and largely invisible unpaid labour'] },
+  { id: 'intergenerational', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 dark:bg-gray-600/30 text-cobe-dark dark:text-gray-300 border border-cobe-dark/20 dark:border-gray-500/50', title: 'Intergenerational Load', context: 'Making the path safer for those who come after — absorbing harm to protect others, carrying the weight of those who came before.', question: 'To what extent do you carry the weight of responsibility for those who follow you, absorbing harm now so others may face less later?', options: ['Very little', 'Somewhat', 'Moderately — I feel it', 'Significantly', 'Profoundly — it is part of who I am professionally'] }
 ];
 
 const CAT_NOTES = {
@@ -536,18 +446,63 @@ const CAT_NOTES = {
 };
 
 const CAT_FILL = {
-  'Foundation Taxes': 'bg-cobe-accent',
-  'Survival Taxes': 'bg-cobe-rust',
-  'Systemic Taxes': 'bg-cobe-muted',
-  'Leadership Taxes': 'bg-gray-400',
-  'Resistance Taxes': 'bg-white'
+  'Foundation Taxes': 'bg-cobe-accent', 'Survival Taxes': 'bg-cobe-rust', 'Systemic Taxes': 'bg-cobe-muted', 'Leadership Taxes': 'bg-gray-400', 'Resistance Taxes': 'bg-white'
 };
 
 let currentQ = 0;
 let answers = {};
 let kitWatchInterval;
+let highestCatGlobal = "";
 
-// Screen Navigation
+// Keyboard Accessibility
+document.addEventListener('keydown', function(event) {
+    const activeScreen = document.querySelector('.screen.active');
+    if (!activeScreen || activeScreen.id !== 'screen-assessment') return;
+    
+    // Ignore keydown if a modifier key is pressed
+    if (event.ctrlKey || event.altKey || event.metaKey) return;
+
+    const q = TAXES[currentQ];
+    if (!q) return;
+
+    const numOptions = q.options.length;
+    const key = event.key;
+
+    // Check if key is a valid option number
+    if (key >= '1' && key <= numOptions.toString()) {
+        const index = parseInt(key) - 1;
+        selectOption(index);
+    } else if (key === 'Enter') {
+        // Prevent default form submission if any
+        event.preventDefault();
+        // If an answer is selected, go next
+        if (answers[q.id] !== undefined) {
+            nextQuestion();
+        }
+    }
+});
+
+// Init Logic 
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+    const urlParams = new URLSearchParams(window.location.search);
+    const rParam = urlParams.get('r');
+    if (rParam) {
+        try {
+            answers = JSON.parse(atob(rParam));
+            setTimeout(showResults, 100); 
+            return;
+        } catch (e) { console.error("Invalid results link"); }
+    }
+    try {
+        const savedAnswers = localStorage.getItem('cobe_assessment_answers');
+        if (savedAnswers && localStorage.getItem('cobe_assessment_completed') === 'true') {
+            const prevBtn = document.getElementById('btn-prev-results');
+            if (prevBtn) prevBtn.classList.remove('hidden');
+        }
+    } catch(e) {}
+});
+
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => {
       s.classList.remove('active');
@@ -555,10 +510,9 @@ function showScreen(id) {
   });
   const activeScreen = document.getElementById(id);
   activeScreen.classList.add('active');
-  // Trigger animation on children if applicable
   const animTarget = activeScreen.querySelector('.animate-fade-up') || activeScreen;
   animTarget.classList.remove('animate-fade-up');
-  void animTarget.offsetWidth; // trigger reflow
+  void animTarget.offsetWidth; 
   animTarget.classList.add('animate-fade-up');
   window.scrollTo(0, 0);
   if (typeof lucide !== 'undefined') { lucide.createIcons(); }
@@ -567,9 +521,19 @@ function showScreen(id) {
 function goLanding() { showScreen('screen-landing'); currentQ = 0; answers = {}; }
 function showCorporate() { showScreen('screen-corporate'); }
 
-// Assessment Flow
+function loadPreviousResults() {
+    try {
+        const savedAnswers = localStorage.getItem('cobe_assessment_answers');
+        if (savedAnswers) {
+            answers = JSON.parse(savedAnswers);
+            showResults();
+        }
+    } catch(e) {}
+}
+
 function startAssessment() {
-  currentQ = 0; answers = {};
+  currentQ = 0; 
+  answers = {};
   showScreen('screen-assessment');
   renderQuestion();
 }
@@ -579,7 +543,6 @@ function renderQuestion() {
   const pct = Math.round((currentQ / TAXES.length) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
   
-  // Progress Milestones
   let labelText = `Question ${currentQ + 1} of ${TAXES.length}`;
   if (currentQ === 7) labelText += " — Halfway there. You're doing great.";
   if (currentQ === 13) labelText += " — Almost done. Just two more.";
@@ -589,11 +552,11 @@ function renderQuestion() {
 
   const optionsHTML = q.options.map((opt, i) => `
     <button class="w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all font-medium text-sm md:text-base flex items-center gap-4 group focus:outline-none
-      ${selected === i ? 'border-cobe-black bg-gray-50 text-cobe-black' : 'border-gray-200 bg-white text-cobe-dark hover:border-cobe-accent hover:bg-gray-50'}" 
+      ${selected === i ? 'border-cobe-black dark:border-cobe-accent bg-gray-50 dark:bg-cobe-accent/10 text-cobe-black dark:text-cobe-accent' : 'border-gray-200 dark:border-white/10 bg-white dark:bg-[#1f1f1f] text-cobe-dark dark:text-gray-300 hover:border-cobe-accent dark:hover:border-cobe-accent hover:bg-gray-50 dark:hover:bg-white/5'}" 
       onclick="selectOption(${i})">
       <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold shrink-0 transition-colors
-        ${selected === i ? 'border-cobe-black bg-cobe-black text-white' : 'border-gray-300 text-gray-400 group-hover:border-cobe-accent group-hover:text-cobe-accent'}">
-        ${String.fromCharCode(65 + i)}
+        ${selected === i ? 'border-cobe-black dark:border-cobe-accent bg-cobe-black dark:bg-cobe-accent text-white dark:text-cobe-black' : 'border-gray-300 dark:border-white/20 text-gray-400 dark:text-gray-500 group-hover:border-cobe-accent group-hover:text-cobe-accent'}">
+        ${i + 1}
       </div>
       <div>${opt}</div>
     </button>
@@ -602,17 +565,17 @@ function renderQuestion() {
   document.getElementById('assessment-body').innerHTML = `
     <div class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 ${q.chip}">${q.category}</div>
     <div class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Tax ${currentQ + 1} of 15 &mdash; ${q.title}</div>
-    <h2 class="font-serif text-3xl md:text-4xl font-bold text-cobe-black mb-4 leading-tight">${q.question}</h2>
-    <p class="text-cobe-muted text-base leading-relaxed mb-10 max-w-xl">${q.context}</p>
+    <h2 class="font-serif text-3xl md:text-4xl font-bold text-cobe-black dark:text-white mb-4 leading-tight">${q.question}</h2>
+    <p class="text-cobe-muted dark:text-gray-400 text-base leading-relaxed mb-10 max-w-xl">${q.context}</p>
     
     <div class="space-y-3 mb-12">
         ${optionsHTML}
     </div>
     
-    <div class="flex items-center justify-between border-t border-gray-200 pt-6">
-      ${currentQ > 0 ? `<button class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-cobe-black transition-colors focus:outline-none" onclick="prevQuestion()">&larr; Previous</button>` : '<div></div>'}
-      <button id="next-btn" class="px-8 py-4 bg-cobe-black text-white text-sm font-bold uppercase tracking-widest rounded-lg transition-all shadow-md focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cobe-dark" onclick="nextQuestion()" ${selected === undefined ? 'disabled' : ''}>
-        ${currentQ < TAXES.length - 1 ? 'Next &rarr;' : 'View My Profile &rarr;'}
+    <div class="flex items-center justify-between border-t border-gray-200 dark:border-white/10 pt-6">
+      ${currentQ > 0 ? `<button class="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 hover:text-cobe-black dark:hover:text-white transition-colors focus:outline-none" onclick="prevQuestion()">&larr; Previous</button>` : '<div></div>'}
+      <button id="next-btn" class="px-8 py-4 bg-cobe-black dark:bg-cobe-accent text-white dark:text-cobe-black text-sm font-bold uppercase tracking-widest rounded-lg transition-all shadow-md focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cobe-dark dark:hover:bg-[#E8B84B]" onclick="nextQuestion()" ${selected === undefined ? 'disabled' : ''}>
+        ${currentQ < TAXES.length - 1 ? 'Next (Enter) &rarr;' : 'View Profile (Enter) &rarr;'}
       </button>
     </div>
   `;
@@ -621,28 +584,66 @@ function renderQuestion() {
 function selectOption(i) {
   const q = TAXES[currentQ];
   answers[q.id] = i;
-  renderQuestion(); // Re-render to show selected state immediately
+  renderQuestion();
 }
 
 function nextQuestion() {
   if (answers[TAXES[currentQ].id] === undefined) return;
+  
+  // Validation Toasts for Psychological Safety
+  const toast = document.getElementById('validation-toast');
+  const toastText = document.getElementById('validation-text');
+  
+  if (currentQ === 3) {
+      toastText.innerText = "Validation: 87% of professionals in our study also reported this.";
+      showToast(toast);
+  } else if (currentQ === 7) {
+      toastText.innerText = "Validation: You are not alone. 89% reported similar exposure.";
+      showToast(toast);
+  } else if (currentQ === 11) {
+      toastText.innerText = "Validation: 91% of leaders experience this exact paradox.";
+      showToast(toast);
+  }
+
   if (currentQ < TAXES.length - 1) { 
       currentQ++; 
       renderQuestion(); 
   }
   else { 
+      calculateHighestCategory();
       simulateLoading();
   }
+}
+
+function showToast(element) {
+    element.classList.add('show');
+    setTimeout(() => {
+        element.classList.remove('show');
+    }, 3500);
 }
 
 function prevQuestion() {
   if (currentQ > 0) { currentQ--; renderQuestion(); }
 }
 
-// Loading Sequence Animation
+function calculateHighestCategory() {
+    const cats = [...new Set(TAXES.map(t => t.category))];
+    const catScores = {};
+    cats.forEach(cat => {
+        const catTaxes = TAXES.filter(t => t.category === cat);
+        const total = catTaxes.reduce((sum, t) => sum + (answers[t.id] || 0), 0);
+        const max = catTaxes.length * 4;
+        catScores[cat] = Math.round((total / max) * 100);
+    });
+    highestCatGlobal = cats.reduce((a, b) => catScores[a] > catScores[b] ? a : b);
+}
+
+// 1% Enhancement: Somatic Loading Sequence
 function simulateLoading() {
     showScreen('screen-loading');
     const textEl = document.getElementById('loading-text');
+    textEl.style.opacity = 1;
+    textEl.innerText = "Analyzing your responses...";
 
     setTimeout(() => {
         textEl.style.opacity = 0;
@@ -650,25 +651,28 @@ function simulateLoading() {
             textEl.innerText = "Benchmarking against 1,039 professionals...";
             textEl.style.opacity = 1;
         }, 500);
-    }, 1200);
+    }, 1500);
 
     setTimeout(() => {
         textEl.style.opacity = 0;
         setTimeout(() => {
-            textEl.innerText = "Generating your Excellence Tax™ Profile...";
+            textEl.innerHTML = "Before we view your profile, take a deep breath in.<br><span class='text-lg font-light text-cobe-cream/70 mt-4 block'>What you are carrying is heavy. But it is not yours to fix alone.</span>";
             textEl.style.opacity = 1;
         }, 500);
-    }, 2600);
+    }, 3500);
 
     setTimeout(() => {
         showScreen('screen-capture'); 
         injectKitScores();
-    }, 4000);
+        // Update the capture screen text dynamically based on their result
+        const captureTitle = document.getElementById('dynamic-capture-title');
+        if(captureTitle && highestCatGlobal) {
+            captureTitle.innerHTML = `Your primary extraction zone is <span class="text-cobe-accent">${highestCatGlobal}</span>.`;
+        }
+    }, 8500);
 }
 
-// Inject Scores into Kit.com Form
 function injectKitScores() {
-  // Calculate scores per category
   const cats = [...new Set(TAXES.map(t => t.category))];
   const catScores = {};
   cats.forEach(cat => {
@@ -682,19 +686,15 @@ function injectKitScores() {
   const totalMax = TAXES.length * 4;
   const totalPct = Math.round((totalScore / totalMax) * 100);
 
-  // Interpretation
   let band = 'Lower burden';
   if (totalPct >= 75) band = 'Severe burden';
   else if (totalPct >= 50) band = 'Significant burden';
   else if (totalPct >= 30) band = 'Moderate burden';
 
-  const highestCat = cats.reduce((a, b) => catScores[a] > catScores[b] ? a : b);
-
-  // Prepare custom fields matching Kit
   const customFields = {
       'et_total_score': String(totalPct),
       'et_burden_band': band,
-      'et_highest_category': highestCat,
+      'et_highest_category': highestCatGlobal,
       'et_foundation_pct': String(catScores['Foundation Taxes'] || 0),
       'et_survival_pct': String(catScores['Survival Taxes'] || 0),
       'et_systemic_pct': String(catScores['Systemic Taxes'] || 0),
@@ -703,15 +703,12 @@ function injectKitScores() {
       'et_source': 'score.costofblackexcellence.com'
   };
 
-  // The Kit form loads asynchronously, so we wait for it to render in the DOM
   let attempts = 0;
   const checkExist = setInterval(function() {
       attempts++;
       const form = document.querySelector('.formkit-form');
       if (form) {
           clearInterval(checkExist);
-          
-          // Inject each custom field as a hidden input
           for (const [key, value] of Object.entries(customFields)) {
               let existingInput = form.querySelector(`input[name="fields[${key}]"]`);
               if (!existingInput) {
@@ -721,38 +718,34 @@ function injectKitScores() {
                   input.value = value;
                   form.appendChild(input);
               } else {
-                  existingInput.value = value; // Update if it already exists
+                  existingInput.value = value;
               }
           }
 
-          // Watch for form submission success to automatically show results
           if (kitWatchInterval) clearInterval(kitWatchInterval);
           kitWatchInterval = setInterval(() => {
-              // Query INSIDE the interval so it detects dynamically added elements
               const successAlert = form.querySelector('.formkit-alert-success');
               if (successAlert && successAlert.innerText.trim() !== '') {
                   clearInterval(kitWatchInterval);
-                  
-                  // Give visual feedback that something is happening
                   const submitBtn = form.querySelector('.formkit-submit');
                   if (submitBtn) {
                       submitBtn.innerHTML = 'Generating Results...';
                       submitBtn.style.opacity = '0.7';
                   }
-
-                  // Wait a brief moment to let them see the success message, then transition
                   setTimeout(showResults, 1200);
               }
           }, 250);
 
-      } else if (attempts > 100) { // Stop checking after 10 seconds
-          clearInterval(checkExist);
-      }
+      } else if (attempts > 100) { clearInterval(checkExist); }
   }, 100);
 }
 
-// Display Results
 function showResults() {
+  try {
+      localStorage.setItem('cobe_assessment_answers', JSON.stringify(answers));
+      localStorage.setItem('cobe_assessment_completed', 'true');
+  } catch(e) {}
+
   const cats = [...new Set(TAXES.map(t => t.category))];
   const catScores = {};
   cats.forEach(cat => {
@@ -788,7 +781,6 @@ function showResults() {
 
   showScreen('screen-results');
 
-  // Animate bars after DOM insertion
   setTimeout(() => {
     cats.forEach(cat => {
       const el = document.getElementById('bar-' + cat.replace(/ /g,'_'));
@@ -809,7 +801,6 @@ function showResults() {
     </div>
   `).join('');
 
-  // Dynamically build the 4th CTA card based on score
   let fourthCardHTML = '';
   if (totalPct >= 50) {
       fourthCardHTML = `
@@ -832,16 +823,22 @@ function showResults() {
       `;
   }
 
-  // Set the styling for the Consult card so it balances visually
   const consultClass = totalPct >= 50 ? "bg-white/5 border-white/10 hover:bg-white/10" : "bg-cobe-rust/20 border-cobe-rust/30 hover:bg-cobe-rust/30";
   const consultAccent = totalPct >= 50 ? "text-cobe-accent" : "text-cobe-rust";
+  
+  if (!highestCatGlobal) {
+      calculateHighestCategory();
+  }
 
   document.getElementById('results-body').innerHTML = `
     <div class="animate-fade-up">
         <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-cobe-accent mb-4">Your Excellence Tax™ Profile</div>
-        <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
-            Your burden is real.<br><span class="text-gray-400 font-light italic">Your exhaustion is evidence.</span>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-2 leading-tight">
+            Your burden is real.
         </h2>
+        <h3 class="font-serif text-2xl md:text-3xl font-light italic text-gray-400 mb-8">
+            Your highest tax is <span class="text-cobe-accent font-semibold">${highestCatGlobal}</span>.
+        </h3>
         <p class="text-lg text-gray-300 font-light mb-12 max-w-2xl leading-relaxed">Based on your responses across all 15 taxes, here is what the data reveals about the structural cost you are paying.</p>
 
         <div class="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
@@ -869,7 +866,7 @@ function showResults() {
             <h3 class="font-serif text-3xl font-bold text-white mb-8 text-center">Your Next Steps</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="https://costofblackexcellence.com/cobe-community.html" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+                <a href="https://community.costofblackexcellence.com" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
                     <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">Community</span>
                     <h4 class="font-serif text-2xl font-bold text-white mb-3">Join The Platform</h4>
                     <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Sanctuary, strategy, and solidarity. A space where your experience does not require explanation.</p>
@@ -899,6 +896,34 @@ function showResults() {
         </p>
     </div>
   `;
+}
+
+function copyResultsLink() {
+    const encoded = btoa(JSON.stringify(answers));
+    const baseUrl = window.location.origin + window.location.pathname;
+    const link = baseUrl + '?r=' + encoded;
+    const el = document.createElement('textarea');
+    el.value = link;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+
+    const btn = document.getElementById('copy-link-btn');
+    const originalHTML = btn.innerHTML;
+    btn.innerHTML = '<i data-lucide="check" class="w-3 h-3 md:w-4 md:h-4 mr-1.5"></i> <span class="hidden sm:inline">Copied!</span><span class="sm:hidden">Copied!</span>';
+    lucide.createIcons();
+    
+    setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        lucide.createIcons();
+    }, 2000);
+}
+
+function submitEnquiry(e) {
+  e.preventDefault();
+  alert('Thank you. Your enquiry has been received. Our executive team will respond within two business days.');
+  goLanding();
 }
 </script>
 </body>
