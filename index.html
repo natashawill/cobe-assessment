@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>The Excellence Tax™ Assessment | COBE Platform</title>
+    <meta name="description" content="Calculate your Excellence Tax™. A research-backed diagnostic for Black professionals navigating corporate infrastructure.">
+    <meta name="author" content="The Cost of Black Excellence Research Institute">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="https://www.costofblackexcellence.com/images/favicon.svg">
+    <link rel="apple-touch-icon" href="https://www.costofblackexcellence.com/images/favicon.svg">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config to match main site -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['DM Sans', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        cobe: {
+                            black: '#1A1209',   /* Deep Brown */
+                            dark: '#2D2416',    /* Charcoal */
+                            accent: '#C8962A',  /* Rich Gold */
+                            light: '#FAF7F2',   /* Pale Cream */
+                            muted: '#5C4A30',   /* Mid Brown */
+                            rust: '#8B3A2A',    /* Rust */
+                            cream: '#F5F0E8'    /* Cream */
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Screen Management */
+        .screen { display: none; min-height: 100vh; }
+        .screen.active { display: flex; flex-direction: column; }
+
+        /* Custom Backgrounds */
+        .hero-pattern {
+            background-color: #1A1209;
+            background-image: 
+                radial-gradient(ellipse 55% 65% at 92% 15%, rgba(200,150,42,0.08) 0%, transparent 65%), 
+                radial-gradient(ellipse 35% 45% at 5% 85%, rgba(139,58,42,0.07) 0%, transparent 60%);
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-up {
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+
+        /* Form Input Autofill Fixes */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #ffffff inset !important;
+            -webkit-text-fill-color: #1A1209 !important;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FAF7F2; }
+        ::-webkit-scrollbar-thumb { background: #C8962A; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1A1209; }
+    </style>
+</head>
+<body class="antialiased font-sans text-cobe-black bg-cobe-light">
+
+<!-- ══════════════════════════════════ LANDING SCREEN ══════════════════════════════════ -->
+<section id="screen-landing" class="screen active hero-pattern relative">
+    
+    <!-- Simple Header for Lead Magnet -->
+    <header class="absolute top-0 w-full p-6 md:p-8 z-20">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="inline-flex flex-col group">
+                <div class="font-serif font-bold text-xl tracking-tight text-white leading-none">
+                    The Cost of Black Excellence<span class="text-cobe-accent">.</span>
+                </div>
+                <div class="font-sans font-medium text-[0.55rem] tracking-[0.3em] text-gray-400 mt-1 pl-0.5 opacity-80">
+                    RESEARCH INSTITUTE
+                </div>
+            </div>
+            <a href="https://www.costofblackexcellence.com" class="text-xs font-bold uppercase tracking-widest text-cobe-accent hover:text-white transition-colors hidden sm:block">
+                Return to Main Site
+            </a>
+        </div>
+    </header>
+
+    <div class="flex-grow flex flex-col justify-center items-center p-6 mt-16 z-10">
+        <div class="max-w-4xl w-full mx-auto animate-fade-up">
+            
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center justify-center gap-2 px-3 py-1 rounded-full bg-cobe-accent/10 border border-cobe-accent/20 text-cobe-accent text-[10px] font-bold uppercase tracking-wider mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-cobe-accent"></span> Assessment Tool
+                </div>
+                <h1 class="text-5xl md:text-6xl lg:text-7xl font-serif font-bold text-white mb-6 leading-tight">
+                    The Cost of<br><em class="text-cobe-accent font-light not-italic">Black Excellence™</em>
+                </h1>
+                <p class="text-lg md:text-xl font-light text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                    Independent research documenting what organisations demand — and refuse to acknowledge. Built on evidence from 1,039 Black professionals.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+                
+                <!-- Track: Professional -->
+                <button onclick="startAssessment()" class="group bg-white/5 border border-white/10 p-8 md:p-10 rounded-3xl text-left hover:bg-white/10 hover:border-cobe-accent/50 transition-all duration-300 relative overflow-hidden flex flex-col h-full focus:outline-none">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-accent/20 rounded-full blur-[40px] group-hover:bg-cobe-accent/40 transition-colors"></div>
+                    <span class="text-[10px] font-bold tracking-widest uppercase text-cobe-accent mb-4 block">For Black Professionals</span>
+                    <h3 class="text-2xl font-serif font-bold text-white mb-3">Calculate your Excellence Tax™</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-8 flex-grow">Take the 15-question diagnostic. Name what you carry. Understand your burden profile and how to protect your peace.</p>
+                    <div class="inline-flex items-center text-sm font-bold text-white group-hover:text-cobe-accent transition-colors mt-auto">
+                        Begin assessment <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                    </div>
+                </button>
+
+                <!-- Track: Corporate -->
+                <button onclick="showCorporate()" class="group bg-cobe-rust/10 border border-cobe-rust/30 p-8 md:p-10 rounded-3xl text-left hover:bg-cobe-rust/20 hover:border-cobe-rust/60 transition-all duration-300 relative overflow-hidden flex flex-col h-full focus:outline-none">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-rust/20 rounded-full blur-[40px] group-hover:bg-cobe-rust/40 transition-colors"></div>
+                    <span class="text-[10px] font-bold tracking-widest uppercase text-cobe-rust/80 mb-4 block">For HR & DEI Leaders</span>
+                    <h3 class="text-2xl font-serif font-bold text-white mb-3">Audit your organisation's extraction</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-8 flex-grow">Access the research. Commission an organisational diagnostic. Replace performative inclusion with structural accountability.</p>
+                    <div class="inline-flex items-center text-sm font-bold text-white group-hover:text-cobe-rust transition-colors mt-auto">
+                        Access corporate track <i data-lucide="arrow-right" class="ml-2 w-4 h-4"></i>
+                    </div>
+                </button>
+
+            </div>
+
+            <p class="text-center text-xs text-gray-500 mt-16 uppercase tracking-widest">
+                Independent research. No corporate funding. Evidence free from institutional constraint.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════ ASSESSMENT SCREEN ══════════════════════════════════ -->
+<section id="screen-assessment" class="screen bg-cobe-light">
+    <!-- Header with Progress -->
+    <header class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-4 md:gap-8">
+            <div class="font-serif font-bold text-lg text-cobe-black hidden sm:block">COBE<span class="text-cobe-accent">.</span></div>
+            
+            <div class="flex-grow">
+                <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div id="progress-fill" class="h-full bg-cobe-accent transition-all duration-500 ease-out" style="width:0%"></div>
+                </div>
+                <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right mt-2" id="progress-label">Question 1 of 15</div>
+            </div>
+
+            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black transition-colors focus:outline-none">
+                Exit
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-grow flex flex-col justify-center py-12 px-4 sm:px-6">
+        <div class="max-w-2xl mx-auto w-full animate-fade-up" id="assessment-body">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════ CAPTURE SCREEN ══════════════════════════════════ -->
+<section id="screen-capture" class="screen bg-cobe-light">
+    <header class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto flex items-center justify-between gap-4 md:gap-8">
+            <div class="font-serif font-bold text-lg text-cobe-black">COBE<span class="text-cobe-accent">.</span></div>
+            <div class="flex-grow">
+                <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-cobe-rust transition-all duration-500" style="width:100%"></div>
+                </div>
+                <div class="text-[10px] font-bold uppercase tracking-widest text-gray-400 text-right mt-2">Assessment Complete</div>
+            </div>
+            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black transition-colors focus:outline-none">Exit</button>
+        </div>
+    </header>
+
+    <div class="flex-grow flex flex-col justify-center py-12 px-4 sm:px-6">
+        <div class="max-w-xl mx-auto w-full bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-gray-100 animate-fade-up">
+            
+            <div class="w-16 h-16 bg-cobe-accent/10 text-cobe-accent rounded-full flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="file-check" class="w-8 h-8"></i>
+            </div>
+            
+            <h2 class="font-serif text-3xl md:text-4xl font-bold text-cobe-black text-center mb-4">Where shall we send your Excellence Tax™ profile?</h2>
+            <p class="text-sm text-cobe-muted text-center leading-relaxed mb-8">
+                Your burden profile and personalised insights are ready. Enter your details below and we will calculate your score across all five categories and generate your recommended next steps.
+            </p>
+
+            <div class="space-y-4 mb-8">
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">First Name</label>
+                    <input type="text" id="capture-name" placeholder="Your first name" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-cobe-black focus:outline-none focus:border-cobe-accent focus:ring-1 focus:ring-cobe-accent transition-all">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-2">Email Address</label>
+                    <input type="email" id="capture-email" placeholder="name@email.com" class="w-full bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-cobe-black focus:outline-none focus:border-cobe-accent focus:ring-1 focus:ring-cobe-accent transition-all">
+                </div>
+                <p id="capture-error" class="text-xs font-bold text-cobe-rust hidden mt-2">Please enter your name and a valid email address to continue.</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="prevQuestion(); showScreen('screen-assessment');" class="px-6 py-4 border border-gray-200 text-cobe-black text-sm font-bold uppercase tracking-widest rounded-lg hover:bg-gray-50 transition-colors w-full sm:w-1/3 text-center focus:outline-none">
+                    Back
+                </button>
+                <button id="submit-btn" onclick="submitCapture()" class="px-6 py-4 bg-cobe-accent text-cobe-black text-sm font-bold uppercase tracking-widest rounded-lg hover:bg-[#E8B84B] transition-colors w-full sm:w-2/3 text-center shadow-md focus:outline-none">
+                    View My Results &rarr;
+                </button>
+            </div>
+
+            <p class="text-[11px] text-gray-400 text-center mt-8 leading-relaxed">
+                By continuing you agree to receive your results and research updates from COBE. We will never share your data. You can unsubscribe at any time.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════ RESULTS SCREEN ══════════════════════════════════ -->
+<section id="screen-results" class="screen hero-pattern text-white">
+    <header class="border-b border-white/10 py-4 px-6 bg-black/20 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="font-serif font-bold text-lg text-white">COBE<span class="text-cobe-accent">.</span></div>
+            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors focus:outline-none">
+                Start Again
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-grow py-16 px-4 sm:px-6 overflow-y-auto">
+        <div class="max-w-3xl mx-auto" id="results-body">
+            <!-- Injected by JS -->
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════ CORPORATE SCREEN ══════════════════════════════════ -->
+<section id="screen-corporate" class="screen bg-cobe-light text-cobe-black">
+    <header class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="font-serif font-bold text-lg text-cobe-black">COBE<span class="text-cobe-accent">.</span></div>
+            <button onclick="goLanding()" class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-cobe-black transition-colors focus:outline-none">
+                &larr; Back
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-grow py-16 px-4 sm:px-6">
+        <div class="max-w-4xl mx-auto animate-fade-up">
+            
+            <div class="text-center mb-16">
+                <span class="text-cobe-rust font-bold tracking-[0.2em] uppercase text-[11px] mb-4 block">For Organisations</span>
+                <h2 class="text-3xl md:text-5xl font-serif font-bold text-cobe-black mb-6 leading-tight">
+                    The Excellence Tax™ is operating in your workplace right now.
+                </h2>
+                <p class="text-cobe-muted text-lg max-w-2xl mx-auto leading-relaxed">
+                    The question is no longer whether extraction exists. The research proves it does. The question is whether you act — or continue to extract.
+                </p>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <div class="bg-white border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm">
+                    <div class="font-serif text-4xl font-bold text-cobe-black mb-3">86%</div>
+                    <div class="text-sm text-cobe-muted leading-relaxed">of Black professionals work harder than colleagues just to be seen as competent</div>
+                </div>
+                <div class="bg-white border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm">
+                    <div class="font-serif text-4xl font-bold text-cobe-black mb-3">91%</div>
+                    <div class="text-sm text-cobe-muted leading-relaxed">have reached breaking point where leaving became a survival strategy</div>
+                </div>
+                <div class="bg-white border-t-4 border-cobe-rust rounded-xl p-8 shadow-sm">
+                    <div class="font-serif text-4xl font-bold text-cobe-black mb-3">£166k</div>
+                    <div class="text-sm text-cobe-muted leading-relaxed">average replacement cost per senior Black professional lost to extraction</div>
+                </div>
+            </div>
+
+            <!-- Services -->
+            <div class="bg-white rounded-3xl border border-gray-200 p-8 md:p-12 shadow-sm mb-16">
+                <h3 class="font-serif text-2xl font-bold text-cobe-black mb-8 border-b border-gray-100 pb-4">Corporate Engagements</h3>
+                
+                <div class="space-y-6">
+                    <div class="flex gap-6 group">
+                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">01</div>
+                        <div class="pb-6 border-b border-gray-100 flex-grow">
+                            <h4 class="font-bold text-cobe-black text-lg mb-2">Excellence Tax™ Organisational Audit</h4>
+                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">A full diagnostic mapping which of the 15 taxes your organisation imposes, on whom, and at what cost. Evidence-based. Framework-led.</p>
+                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">From £50,000</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">02</div>
+                        <div class="pb-6 border-b border-gray-100 flex-grow">
+                            <h4 class="font-bold text-cobe-black text-lg mb-2">Corporate Keynote & Briefing</h4>
+                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">Research-led speaking for leadership teams, board sessions, and all-staff events. Named by senior leaders as "the briefing that changed the conversation."</p>
+                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">From £3,000</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">03</div>
+                        <div class="pb-6 border-b border-gray-100 flex-grow">
+                            <h4 class="font-bold text-cobe-black text-lg mb-2">Sector Intelligence Report</h4>
+                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">Quarterly deep-dive into Excellence Tax™ patterns across your sector — healthcare, education, law, construction, tech. Benchmarking and accountability data.</p>
+                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">From £5,000 per report</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-6 group">
+                        <div class="font-serif text-3xl font-bold text-gray-200 group-hover:text-cobe-accent transition-colors">04</div>
+                        <div>
+                            <h4 class="font-bold text-cobe-black text-lg mb-2">CCTP™ Licensing Programme</h4>
+                            <p class="text-sm text-cobe-muted leading-relaxed mb-2">Train your internal HR and DEI team as Certified Excellence Tax™ Practitioners. Build in-house capacity to identify, measure, and eliminate extraction.</p>
+                            <span class="text-xs font-bold text-cobe-rust uppercase tracking-wider">Enquire for licensing fee</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="bg-cobe-black text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-cobe-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
+                
+                <div class="relative z-10">
+                    <h3 class="font-serif text-3xl font-bold mb-2">Request a consultation</h3>
+                    <p class="text-gray-400 text-sm mb-10">All enquiries are treated in confidence. We respond within two business days.</p>
+                    
+                    <form onsubmit="submitEnquiry(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Name</label>
+                                <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors" placeholder="Your name">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Organisation</label>
+                                <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors" placeholder="Organisation name">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Role</label>
+                                <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors" placeholder="Your role">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Service Interest</label>
+                                <select required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors appearance-none">
+                                    <option value="" class="text-gray-900">Select a service...</option>
+                                    <option class="text-gray-900">Organisational Audit</option>
+                                    <option class="text-gray-900">Corporate Keynote</option>
+                                    <option class="text-gray-900">Sector Intelligence Report</option>
+                                    <option class="text-gray-900">CCTP™ Licensing</option>
+                                    <option class="text-gray-900">General enquiry</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Message</label>
+                            <textarea rows="4" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors resize-y" placeholder="Tell us about your organisation and what you're looking to address."></textarea>
+                        </div>
+                        <button type="submit" class="inline-flex justify-center items-center px-8 py-4 bg-cobe-rust text-white text-sm font-bold uppercase tracking-widest rounded-lg hover:bg-[#7A3224] transition-colors shadow-md w-full md:w-auto">
+                            Send Enquiry &rarr;
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════ JAVASCRIPT LOGIC ══════════════════════════════════ -->
+<script>
+// Icon Initialization
+if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+
+// Database
+const TAXES = [
+  {
+    id: 'proof', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20',
+    title: 'Proof Burden',
+    context: 'Black professionals repeatedly demonstrate competence that colleagues have granted automatically — regardless of qualifications or track record.',
+    question: 'How often do you over-prepare, re-explain your credentials, or work harder simply to establish basic credibility?',
+    options: ['Rarely or never', 'Occasionally — a few times a year', 'Regularly — most months', 'Frequently — most weeks', 'Always — it is a constant requirement']
+  },
+  {
+    id: 'performance', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20',
+    title: 'Performance Load',
+    context: 'Working at 150% to receive 70% recognition. Black professionals execute at higher standards whilst appearing effortless.',
+    question: 'How often do you feel you must outperform colleagues by a significant margin just to receive equivalent recognition?',
+    options: ['Rarely or never', 'Occasionally', 'Regularly', 'Frequently', 'Always — it is the baseline expectation']
+  },
+  {
+    id: 'perfection', category: 'Foundation Taxes', chip: 'bg-cobe-accent/10 text-[#8B6914] border border-cobe-accent/20',
+    title: 'Error Intolerance',
+    context: 'A single mistake from a Black professional confirms bias. Multiple mistakes from white colleagues are attributed to circumstances.',
+    question: 'How much do you monitor yourself for errors at work, out of fear that a mistake will be weaponised or held against you in ways it would not be for others?',
+    options: ['Not at all', 'Slightly', 'Moderately', 'Significantly', 'Constantly — it creates ongoing anxiety']
+  },
+  {
+    id: 'codeswitching', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20',
+    title: 'Linguistic Modulation (Code-Switching)',
+    context: 'Adjusting language, tone, cultural references, and humour to white professional norms — multiple times a day, every day.',
+    question: 'How often do you modify how you speak, express yourself, or present your identity to make colleagues more comfortable?',
+    options: ['Rarely or never', 'Sometimes, in certain contexts', 'Regularly — in most professional settings', 'Very often', 'Constantly — it is automatic and exhausting']
+  },
+  {
+    id: 'voice', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20',
+    title: 'Voice Suppression',
+    context: 'Silencing opinions, challenges, and contributions to avoid being labelled difficult, aggressive, or a problem.',
+    question: 'How often do you hold back opinions or contributions at work because you anticipate a negative racial or gendered response?',
+    options: ['Rarely or never', 'Occasionally', 'Regularly', 'Very often', 'Constantly — it costs me professionally and personally']
+  },
+  {
+    id: 'emotion', category: 'Survival Taxes', chip: 'bg-cobe-rust/10 text-cobe-rust border border-cobe-rust/20',
+    title: 'Emotional Suppression',
+    context: 'Performing composure, managing others\' comfort with your presence, suppressing legitimate emotional responses in real time.',
+    question: 'How often do you suppress your genuine emotional responses at work to manage how you are perceived by others?',
+    options: ['Rarely or never', 'Sometimes', 'Regularly', 'Very often', 'Always — it has become second nature']
+  },
+  {
+    id: 'bias', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20',
+    title: 'Bias Navigation',
+    context: 'Identifying, pre-empting, and managing racialised bias in systems, processes, and decisions — as additional unpaid labour.',
+    question: 'How much of your professional energy goes into navigating racial bias within your organisation\'s systems and culture?',
+    options: ['Very little', 'Some energy', 'A noticeable amount', 'A significant amount', 'A substantial portion of my day']
+  },
+  {
+    id: 'microagg', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20',
+    title: 'Microaggression Absorption',
+    context: 'Absorbing racialised slights, dismissals, and harm — then managing the aftermath alone, in silence.',
+    question: 'How often do you experience microaggressions at work, and how much does absorbing them without acknowledgement cost you?',
+    options: ['Rarely and low cost', 'Occasionally and some cost', 'Regularly and moderate cost', 'Frequently and significant cost', 'Constantly and severe cost']
+  },
+  {
+    id: 'representation', category: 'Systemic Taxes', chip: 'bg-cobe-muted/10 text-cobe-muted border border-cobe-muted/20',
+    title: 'Representational Burden',
+    context: 'Carrying the weight of representing your entire race. Your failures confirm bias. Your successes become the exception.',
+    question: 'How much do you feel that your actions and outcomes reflect on Black people broadly, rather than being attributed to you as an individual?',
+    options: ['Not at all', 'Slightly', 'Moderately', 'Significantly', 'Completely — it is a persistent weight']
+  },
+  {
+    id: 'threshold', category: 'Leadership Taxes', chip: 'bg-gray-200 text-gray-700 border border-gray-300',
+    title: 'Threshold Fatigue',
+    context: 'The seniority paradox. The more senior you become, the greater the burden. Advancement increases extraction rather than reducing it.',
+    question: 'As you have progressed in your career, has the weight of navigating workplace extraction increased, decreased, or stayed the same?',
+    options: ['Decreased significantly', 'Decreased somewhat', 'Stayed the same', 'Increased somewhat', 'Increased significantly — it compounds with each step']
+  },
+  {
+    id: 'sponsorship', category: 'Leadership Taxes', chip: 'bg-gray-200 text-gray-700 border border-gray-300',
+    title: 'Unresourced Sponsorship',
+    context: 'Mentoring, sponsoring, and supporting junior Black colleagues without compensation, recognition, or protected time.',
+    question: 'How much time and energy do you invest in supporting and developing other Black professionals, beyond your formal role responsibilities?',
+    options: ['Very little — it is not part of my role', 'Some — occasionally', 'A moderate amount', 'A significant amount of unpaid time', 'An enormous amount — it is a second job']
+  },
+  {
+    id: 'exposure', category: 'Leadership Taxes', chip: 'bg-gray-200 text-gray-700 border border-gray-300',
+    title: 'Exposure Without Protection',
+    context: 'Holding visibility and responsibility without the institutional protection, sponsorship, or backing granted to white peers at the same level.',
+    question: 'How often do you feel that your seniority exposes you to risk or criticism without adequate organisational protection?',
+    options: ['Rarely', 'Sometimes', 'Regularly', 'Very often', 'Always — I am visible and unprotected simultaneously']
+  },
+  {
+    id: 'evidence', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 text-cobe-dark border border-cobe-dark/20',
+    title: 'Evidence Stewardship',
+    context: 'Documenting, filing, and maintaining records of discrimination and bias — unpaid labour that organisations refuse to perform.',
+    question: 'How often do you document incidents of discrimination or bias at work, in case you need to protect yourself later?',
+    options: ['Never', 'Rarely', 'Sometimes', 'Often', 'Constantly — it is a protective necessity']
+  },
+  {
+    id: 'infrastructure', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 text-cobe-dark border border-cobe-dark/20',
+    title: 'Infrastructure Building',
+    context: 'Creating the support structures, safe spaces, and resources that organisations should provide but do not.',
+    question: 'How much effort do you personally invest in building support networks and safe spaces for Black colleagues — work that your organisation does not do?',
+    options: ['Very little', 'Some', 'A moderate amount', 'A significant amount', 'This is constant and largely invisible unpaid labour']
+  },
+  {
+    id: 'intergenerational', category: 'Resistance Taxes', chip: 'bg-cobe-dark/10 text-cobe-dark border border-cobe-dark/20',
+    title: 'Intergenerational Load',
+    context: 'Making the path safer for those who come after — absorbing harm to protect others, carrying the weight of those who came before.',
+    question: 'To what extent do you carry the weight of responsibility for those who follow you, absorbing harm now so others may face less later?',
+    options: ['Very little', 'Somewhat', 'Moderately — I feel it', 'Significantly', 'Profoundly — it is part of who I am professionally']
+  }
+];
+
+const CAT_NOTES = {
+  'Foundation Taxes': 'Proving competence every day, working 150% for 70% recognition, living under zero margin for error.',
+  'Survival Taxes': 'Daily identity suppression — which voice to use, what to show, what to swallow.',
+  'Systemic Taxes': 'Navigating institutional bias, absorbing microaggressions, carrying the race.',
+  'Leadership Taxes': 'Breaking whilst appearing whole. Protecting others whilst unprotected yourself.',
+  'Resistance Taxes': 'Unpaid justice labour. Documenting harm. Building what organisations refuse to provide.'
+};
+
+const CAT_FILL = {
+  'Foundation Taxes': 'bg-cobe-accent',
+  'Survival Taxes': 'bg-cobe-rust',
+  'Systemic Taxes': 'bg-cobe-muted',
+  'Leadership Taxes': 'bg-gray-400',
+  'Resistance Taxes': 'bg-white'
+};
+
+let currentQ = 0;
+let answers = {};
+
+// Screen Navigation
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active');
+      s.classList.remove('animate-fade-up');
+  });
+  const activeScreen = document.getElementById(id);
+  activeScreen.classList.add('active');
+  // Trigger animation on children if applicable
+  const animTarget = activeScreen.querySelector('.animate-fade-up') || activeScreen;
+  animTarget.classList.remove('animate-fade-up');
+  void animTarget.offsetWidth; // trigger reflow
+  animTarget.classList.add('animate-fade-up');
+  window.scrollTo(0, 0);
+  if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+}
+
+function goLanding() { showScreen('screen-landing'); currentQ = 0; answers = {}; }
+function showCorporate() { showScreen('screen-corporate'); }
+
+// Assessment Flow
+function startAssessment() {
+  currentQ = 0; answers = {};
+  showScreen('screen-assessment');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = TAXES[currentQ];
+  const pct = Math.round((currentQ / TAXES.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `Question ${currentQ + 1} of ${TAXES.length}`;
+
+  const selected = answers[q.id];
+
+  const optionsHTML = q.options.map((opt, i) => `
+    <button class="w-full text-left p-4 md:p-5 rounded-xl border-2 transition-all font-medium text-sm md:text-base flex items-center gap-4 group focus:outline-none
+      ${selected === i ? 'border-cobe-black bg-gray-50 text-cobe-black' : 'border-gray-200 bg-white text-cobe-dark hover:border-cobe-accent hover:bg-gray-50'}" 
+      onclick="selectOption(${i})">
+      <div class="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold shrink-0 transition-colors
+        ${selected === i ? 'border-cobe-black bg-cobe-black text-white' : 'border-gray-300 text-gray-400 group-hover:border-cobe-accent group-hover:text-cobe-accent'}">
+        ${String.fromCharCode(65 + i)}
+      </div>
+      <div>${opt}</div>
+    </button>
+  `).join('');
+
+  document.getElementById('assessment-body').innerHTML = `
+    <div class="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-8 ${q.chip}">${q.category}</div>
+    <div class="text-xs font-bold uppercase tracking-widest text-gray-400 mb-2">Tax ${currentQ + 1} of 15 &mdash; ${q.title}</div>
+    <h2 class="font-serif text-3xl md:text-4xl font-bold text-cobe-black mb-4 leading-tight">${q.question}</h2>
+    <p class="text-cobe-muted text-base leading-relaxed mb-10 max-w-xl">${q.context}</p>
+    
+    <div class="space-y-3 mb-12">
+        ${optionsHTML}
+    </div>
+    
+    <div class="flex items-center justify-between border-t border-gray-200 pt-6">
+      ${currentQ > 0 ? `<button class="text-sm font-bold uppercase tracking-widest text-gray-500 hover:text-cobe-black transition-colors focus:outline-none" onclick="prevQuestion()">&larr; Previous</button>` : '<div></div>'}
+      <button id="next-btn" class="px-8 py-4 bg-cobe-black text-white text-sm font-bold uppercase tracking-widest rounded-lg transition-all shadow-md focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed hover:bg-cobe-dark" onclick="nextQuestion()" ${selected === undefined ? 'disabled' : ''}>
+        ${currentQ < TAXES.length - 1 ? 'Next &rarr;' : 'View My Profile &rarr;'}
+      </button>
+    </div>
+  `;
+}
+
+function selectOption(i) {
+  const q = TAXES[currentQ];
+  answers[q.id] = i;
+  renderQuestion(); // Re-render to show selected state immediately
+}
+
+function nextQuestion() {
+  if (answers[TAXES[currentQ].id] === undefined) return;
+  if (currentQ < TAXES.length - 1) { currentQ++; renderQuestion(); }
+  else { showScreen('screen-capture'); }
+}
+
+function prevQuestion() {
+  if (currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+// Form Submission (Kit.com Integration)
+async function submitCapture() {
+  const name = document.getElementById('capture-name').value.trim();
+  const email = document.getElementById('capture-email').value.trim();
+  const errEl = document.getElementById('capture-error');
+  const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  
+  if (!name || !emailValid) { 
+      errEl.classList.remove('hidden'); 
+      return; 
+  }
+  errEl.classList.add('hidden');
+  window.cobeUser = { name, email };
+
+  // ── KIT CONFIGURATION ──
+  const KIT_FORM_ID  = '9141244';
+  const KIT_API_KEY  = 'PASTE_YOUR_KIT_API_KEY'; // MUST REPLACE BEFORE LIVE
+
+  // Calculate scores
+  const cats = [...new Set(TAXES.map(t => t.category))];
+  const catScores = {};
+  cats.forEach(cat => {
+    const catTaxes = TAXES.filter(t => t.category === cat);
+    const total = catTaxes.reduce((sum, t) => sum + (answers[t.id] || 0), 0);
+    const max = catTaxes.length * 4;
+    catScores[cat] = Math.round((total / max) * 100);
+  });
+  const totalPct = Math.round(
+    (Object.values(answers).reduce((s, v) => s + v, 0) / (TAXES.length * 4)) * 100
+  );
+
+  let band = 'Lower burden';
+  if (totalPct >= 75) band = 'Severe burden';
+  else if (totalPct >= 50) band = 'Significant burden';
+  else if (totalPct >= 30) band = 'Moderate burden';
+
+  const highestCat = cats.reduce((a, b) => catScores[a] > catScores[b] ? a : b);
+
+  const btn = document.getElementById('submit-btn');
+  const originalText = btn.innerHTML;
+  btn.innerHTML = 'Analyzing Data...';
+  btn.disabled = true;
+  btn.classList.add('opacity-70');
+
+  try {
+    await fetch(`https://api.convertkit.com/v3/forms/${KIT_FORM_ID}/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        api_key: 'kit_a7b076f1f09b2387066334740abc3691Y',
+        email: email,
+        first_name: name,
+        fields: {
+          et_total_score:       String(totalPct),
+          et_burden_band:       band,
+          et_highest_category:  highestCat,
+          et_foundation_pct:    String(catScores['Foundation Taxes'] || 0),
+          et_survival_pct:      String(catScores['Survival Taxes']   || 0),
+          et_systemic_pct:      String(catScores['Systemic Taxes']   || 0),
+          et_leadership_pct:    String(catScores['Leadership Taxes'] || 0),
+          et_resistance_pct:    String(catScores['Resistance Taxes'] || 0),
+          et_source:            'score.costofblackexcellence.com'
+        },
+        tags: ['Excellence Tax Assessment', band]
+      })
+    });
+  } catch (kitErr) {
+    console.error('Kit submission error:', kitErr);
+  }
+
+  btn.innerHTML = originalText;
+  btn.disabled = false;
+  btn.classList.remove('opacity-70');
+  showResults();
+}
+
+// Display Results
+function showResults() {
+  const cats = [...new Set(TAXES.map(t => t.category))];
+  const catScores = {};
+  cats.forEach(cat => {
+    const catTaxes = TAXES.filter(t => t.category === cat);
+    const total = catTaxes.reduce((sum, t) => sum + (answers[t.id] || 0), 0);
+    const max = catTaxes.length * 4;
+    catScores[cat] = { score: total, max, pct: Math.round((total / max) * 100) };
+  });
+
+  const totalScore = Object.values(answers).reduce((s, v) => s + v, 0);
+  const totalMax = TAXES.length * 4;
+  const totalPct = Math.round((totalScore / totalMax) * 100);
+
+  let interpretation, insightTitle, insightText;
+
+  if (totalPct >= 75) {
+    interpretation = 'Severe burden';
+    insightTitle = 'Your exhaustion is proportional to extraction — not weakness.';
+    insightText = 'You are paying an extremely high Excellence Tax™ across multiple categories. The research is clear: professionals at this burden level are at or approaching breaking point. Your experience is not an individual failing. It is systematic extraction operating exactly as designed.';
+  } else if (totalPct >= 50) {
+    interpretation = 'Significant burden';
+    insightTitle = 'You are carrying more than your role requires.';
+    insightText = 'Your burden profile reflects patterns seen across mid-to-senior Black professionals in the research — significant extraction that compounds rather than eases with experience. The system is not broken. For you, it is working exactly as intended.';
+  } else if (totalPct >= 30) {
+    interpretation = 'Moderate burden';
+    insightTitle = 'The taxes are present — and they will compound.';
+    insightText = 'You are paying the Excellence Tax™ at a moderate level. The research shows this does not reduce with seniority. Without structural change, these burdens increase with every promotion, every year of service, every attempt to thrive.';
+  } else {
+    interpretation = 'Lower burden — for now';
+    insightTitle = 'Protection today does not mean immunity tomorrow.';
+    insightText = 'Your current burden is lower than most in the research. This may reflect your sector, seniority level, or specific workplace culture. The data shows that extraction intensifies with career advancement. Understanding the framework now gives you language to protect yourself later.';
+  }
+
+  showScreen('screen-results');
+  const userName = (window.cobeUser && window.cobeUser.name) ? window.cobeUser.name : '';
+
+  // Generate Progress Bars
+  const barsHTML = cats.map(cat => `
+    <div class="mb-8">
+      <div class="flex justify-between items-end mb-3">
+        <span class="font-bold text-white text-sm uppercase tracking-wider">${cat}</span>
+        <span class="text-xs font-bold text-gray-400">${catScores[cat].pct}% Burden</span>
+      </div>
+      <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+        <div class="h-full rounded-full ${CAT_FILL[cat]} transition-all duration-1000 ease-out" id="bar-${cat.replace(/ /g,'_')}" style="width:0%"></div>
+      </div>
+      <div class="text-xs text-gray-400 mt-3 font-light leading-relaxed">${CAT_NOTES[cat]}</div>
+    </div>
+  `).join('');
+
+  document.getElementById('results-body').innerHTML = `
+    <div class="animate-fade-up">
+        <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-cobe-accent mb-4">Your Excellence Tax™ Profile</div>
+        <h2 class="font-serif text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
+            ${userName ? userName + ', your' : 'Your'} burden is real.<br><span class="text-gray-400 font-light italic">Your exhaustion is evidence.</span>
+        </h2>
+        <p class="text-lg text-gray-300 font-light mb-12 max-w-2xl leading-relaxed">Based on your responses across all 15 taxes, here is what the data reveals about the structural cost you are paying.</p>
+
+        <div class="bg-white/5 border border-white/10 rounded-3xl p-8 md:p-12 mb-12 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-cobe-accent/10 rounded-full blur-[80px]"></div>
+            
+            <div class="flex flex-col md:flex-row items-start md:items-end gap-6 mb-12 relative z-10 border-b border-white/10 pb-10">
+                <div class="font-serif text-8xl md:text-9xl font-bold text-cobe-accent leading-none">${totalPct}<span class="text-4xl text-gray-500">%</span></div>
+                <div class="pb-2">
+                    <div class="text-xl font-bold text-white mb-1 uppercase tracking-wider">${interpretation}</div>
+                    <div class="text-sm text-gray-400">of maximum Excellence Tax™ burden</div>
+                </div>
+            </div>
+
+            <div class="relative z-10">
+                ${barsHTML}
+            </div>
+        </div>
+
+        <div class="bg-cobe-accent/10 border-l-4 border-cobe-accent rounded-r-xl p-8 mb-16">
+            <h3 class="font-serif text-2xl font-bold text-cobe-accent mb-4">${insightTitle}</h3>
+            <p class="text-white font-light leading-relaxed">${insightText}</p>
+        </div>
+
+        <div class="border-t border-white/10 pt-16">
+            <h3 class="font-serif text-3xl font-bold text-white mb-8 text-center">Your Next Steps</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <a href="https://community.costofblackexcellence.com" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">Community</span>
+                    <h4 class="font-serif text-2xl font-bold text-white mb-3">Join The Platform</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Sanctuary, strategy, and solidarity. A space where your experience does not require explanation.</p>
+                    <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Join Now &rarr;</span>
+                </a>
+
+                <a href="https://www.costofblackexcellence.com/report-landing.html" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">Research</span>
+                    <h4 class="font-serif text-2xl font-bold text-white mb-3">Access the Report</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Evidence from 1,039 Black professionals. The proof that what you carry is systematic, not personal.</p>
+                    <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Download &rarr;</span>
+                </a>
+
+                <a href="https://blog.costofblackexcellence.com" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">The Toolkit</span>
+                    <h4 class="font-serif text-2xl font-bold text-white mb-3">Boundary Scripts</h4>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Direct, Diplomatic, and Documentation strategy scripts for the situations you face every week.</p>
+                    <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Read More &rarr;</span>
+                </a>
+
+                <a href="https://calendly.com/blackexcellenceresearch/meetings-with-natasha" target="_blank" class="group bg-cobe-rust/20 border border-cobe-rust/30 p-8 rounded-2xl hover:bg-cobe-rust/30 transition-all flex flex-col relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-rust/40 rounded-full blur-2xl"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-rust mb-2 relative z-10">1:1 Support</span>
+                    <h4 class="font-serif text-2xl font-bold text-white mb-3 relative z-10">Book a Consultation</h4>
+                    <p class="text-sm text-gray-300 leading-relaxed mb-6 flex-grow relative z-10">Work directly with Natasha Williams to understand your burden profile and build your strategy.</p>
+                    <span class="text-xs font-bold uppercase tracking-wider text-white relative z-10">Book Time &rarr;</span>
+                </a>
+            </div>
+        </div>
+
+        <p class="text-center text-[11px] text-gray-500 mt-16 leading-relaxed max-w-2xl mx-auto border-t border-white/10 pt-8">
+            This assessment is based on independent research with 1,039 Black professionals. Your responses are not stored publicly. The Excellence Tax™ framework is proprietary to The Cost of Black Excellence™ Research Institute. &copy; Natasha Williams 2026.
+        </p>
+    </div>
+  `;
+
+  // Animate bars after DOM insertion
+  setTimeout(() => {
+    cats.forEach(cat => {
+      const el = document.getElementById('bar-' + cat.replace(/ /g,'_'));
+      if (el) el.style.width = catScores[cat].pct + '%';
+    });
+  }, 100);
+}
+
+function submitEnquiry(e) {
+  e.preventDefault();
+  alert('Thank you. Your enquiry has been received. Our executive team will respond within two business days.');
+  goLanding();
+}
+</script>
+</body>
+</html>
