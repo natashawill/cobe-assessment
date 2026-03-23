@@ -217,6 +217,18 @@
     </div>
 </section>
 
+<!-- ══════════════════════════════════ LOADING SCREEN ══════════════════════════════════ -->
+<section id="screen-loading" class="screen hero-pattern text-white">
+    <div class="flex-grow flex flex-col justify-center items-center p-6 z-10">
+        <div class="max-w-md w-full mx-auto text-center">
+            <i data-lucide="loader-2" class="w-16 h-16 text-cobe-accent animate-spin mx-auto mb-8"></i>
+            <h2 id="loading-text" class="text-3xl md:text-4xl font-serif font-bold text-cobe-cream transition-opacity duration-500 opacity-100">
+                Analyzing your responses...
+            </h2>
+        </div>
+    </div>
+</section>
+
 <!-- ══════════════════════════════════ CAPTURE SCREEN ══════════════════════════════════ -->
 <section id="screen-capture" class="screen bg-cobe-light">
     <header class="bg-white border-b border-gray-200 py-4 px-6 sticky top-0 z-50">
@@ -242,11 +254,11 @@
             <h2 class="font-serif text-3xl md:text-4xl font-bold text-cobe-black text-center mb-4">Your Excellence Tax™ profile is ready.</h2>
             
             <p class="text-sm text-cobe-muted text-center leading-relaxed mb-6">
-                <strong>Step 1:</strong> Enter your email below to have your detailed PDF profile and recommendations sent directly to your inbox.
+                We have analyzed your responses and identified your primary extraction zone. Enter your professional email below to unlock your score and reveal your highest taxing area.
             </p>
 
-            <div class="w-full mb-8 min-h-[150px]">
-                <!-- Raw HTML Kit.com Embed provided by user -->
+            <div class="w-full mb-2 min-h-[150px] relative">
+                <!-- Raw HTML Kit.com Embed -->
                 <script src="https://f.convertkit.com/ckjs/ck.5.js"></script>
                 <form action="https://app.kit.com/forms/9141244/subscriptions" class="seva-form formkit-form" method="post" data-sv-form="9141244" data-uid="afbb91101f" data-format="inline" data-version="5" data-options="{&quot;settings&quot;:{&quot;after_subscribe&quot;:{&quot;action&quot;:&quot;message&quot;,&quot;success_message&quot;:&quot;Success! Generating your profile...&quot;,&quot;redirect_url&quot;:&quot;&quot;},&quot;analytics&quot;:{&quot;google&quot;:null,&quot;fathom&quot;:null,&quot;facebook&quot;:null,&quot;segment&quot;:null,&quot;pinterest&quot;:null,&quot;sparkloop&quot;:null,&quot;googletagmanager&quot;:null},&quot;modal&quot;:{&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;powered_by&quot;:{&quot;show&quot;:false,&quot;url&quot;:&quot;https://kit.com/features/forms?utm_campaign=poweredby&amp;utm_content=form&amp;utm_medium=referral&amp;utm_source=dynamic&quot;},&quot;recaptcha&quot;:{&quot;enabled&quot;:false},&quot;return_visitor&quot;:{&quot;action&quot;:&quot;show&quot;,&quot;custom_content&quot;:&quot;&quot;},&quot;slide_in&quot;:{&quot;display_in&quot;:&quot;bottom_right&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15},&quot;sticky_bar&quot;:{&quot;display_in&quot;:&quot;top&quot;,&quot;trigger&quot;:&quot;timer&quot;,&quot;scroll_percentage&quot;:null,&quot;timer&quot;:5,&quot;devices&quot;:&quot;all&quot;,&quot;show_once_every&quot;:15}},&quot;version&quot;:&quot;5&quot;}" min-width="400 500 600 700 800">
                     <div data-style="clean">
@@ -260,7 +272,7 @@
                             </div>
                             <button data-element="submit" class="formkit-submit formkit-submit" style="color: rgb(255, 255, 255); background-color: rgb(22, 119, 190); border-radius: 4px; font-weight: 400;">
                                 <div class="formkit-spinner"><div></div><div></div><div></div></div>
-                                <span class="">Get Results</span>
+                                <span class="">View My Results</span>
                             </button>
                         </div>
                     </div>
@@ -380,7 +392,7 @@
                 </div>
             </div>
 
-            <!-- Contact Form -->
+            <!-- Contact Form Replacement (Less Annoying CRM Embed) -->
             <div class="bg-cobe-black text-white rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden">
                 <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-cobe-accent/20 rounded-full blur-[80px] pointer-events-none"></div>
                 
@@ -388,42 +400,12 @@
                     <h3 class="font-serif text-3xl font-bold mb-2">Request a consultation</h3>
                     <p class="text-gray-400 text-sm mb-10">All enquiries are treated in confidence. We respond within two business days.</p>
                     
-                    <form onsubmit="submitEnquiry(event)" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Name</label>
-                                <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors" placeholder="Your name">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Organisation</label>
-                                <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors" placeholder="Organisation name">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Role</label>
-                                <input type="text" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors" placeholder="Your role">
-                            </div>
-                            <div>
-                                <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Service Interest</label>
-                                <select required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors appearance-none">
-                                    <option value="" class="text-gray-900">Select a service...</option>
-                                    <option class="text-gray-900">Organisational Audit</option>
-                                    <option class="text-gray-900">Corporate Keynote</option>
-                                    <option class="text-gray-900">Sector Intelligence Report</option>
-                                    <option class="text-gray-900">CCTP™ Licensing</option>
-                                    <option class="text-gray-900">General enquiry</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-2">Message</label>
-                            <textarea rows="4" required class="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-cobe-accent transition-colors resize-y" placeholder="Tell us about your organisation and what you're looking to address."></textarea>
-                        </div>
-                        <button type="submit" class="inline-flex justify-center items-center px-8 py-4 bg-cobe-rust text-white text-sm font-bold uppercase tracking-widest rounded-lg hover:bg-[#7A3224] transition-colors shadow-md w-full md:w-auto">
-                            Send Enquiry &rarr;
-                        </button>
-                    </form>
+                    <div class="bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-8 rounded-3xl mt-8">
+                        <blockquote class="lacrm-embed" data-embed-height="650" data-embed-show-header="false">
+                            <a href="https://forms.lessannoyingcrm.com/view/4086390344669997000592539379726">Corporate Engagements</a>
+                        </blockquote>
+                        <script async="true" src="https://embed.lessannoyingcrm.com/embed.js"></script>
+                    </div>
                 </div>
             </div>
 
@@ -596,7 +578,12 @@ function renderQuestion() {
   const q = TAXES[currentQ];
   const pct = Math.round((currentQ / TAXES.length) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = `Question ${currentQ + 1} of ${TAXES.length}`;
+  
+  // Progress Milestones
+  let labelText = `Question ${currentQ + 1} of ${TAXES.length}`;
+  if (currentQ === 7) labelText += " — Halfway there. You're doing great.";
+  if (currentQ === 13) labelText += " — Almost done. Just two more.";
+  document.getElementById('progress-label').textContent = labelText;
 
   const selected = answers[q.id];
 
@@ -644,13 +631,39 @@ function nextQuestion() {
       renderQuestion(); 
   }
   else { 
-      showScreen('screen-capture'); 
-      injectKitScores();
+      simulateLoading();
   }
 }
 
 function prevQuestion() {
   if (currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+// Loading Sequence Animation
+function simulateLoading() {
+    showScreen('screen-loading');
+    const textEl = document.getElementById('loading-text');
+
+    setTimeout(() => {
+        textEl.style.opacity = 0;
+        setTimeout(() => {
+            textEl.innerText = "Benchmarking against 1,039 professionals...";
+            textEl.style.opacity = 1;
+        }, 500);
+    }, 1200);
+
+    setTimeout(() => {
+        textEl.style.opacity = 0;
+        setTimeout(() => {
+            textEl.innerText = "Generating your Excellence Tax™ Profile...";
+            textEl.style.opacity = 1;
+        }, 500);
+    }, 2600);
+
+    setTimeout(() => {
+        showScreen('screen-capture'); 
+        injectKitScores();
+    }, 4000);
 }
 
 // Inject Scores into Kit.com Form
@@ -713,17 +726,24 @@ function injectKitScores() {
           }
 
           // Watch for form submission success to automatically show results
-          const successAlert = form.querySelector('.formkit-alert-success');
-          if (successAlert) {
-              if (kitWatchInterval) clearInterval(kitWatchInterval);
-              kitWatchInterval = setInterval(() => {
-                  if (successAlert.style.display !== 'none' && successAlert.innerText.trim() !== '') {
-                      clearInterval(kitWatchInterval);
-                      // Form submitted successfully, wait 1.5s then show results
-                      setTimeout(showResults, 1500);
+          if (kitWatchInterval) clearInterval(kitWatchInterval);
+          kitWatchInterval = setInterval(() => {
+              // Query INSIDE the interval so it detects dynamically added elements
+              const successAlert = form.querySelector('.formkit-alert-success');
+              if (successAlert && successAlert.innerText.trim() !== '') {
+                  clearInterval(kitWatchInterval);
+                  
+                  // Give visual feedback that something is happening
+                  const submitBtn = form.querySelector('.formkit-submit');
+                  if (submitBtn) {
+                      submitBtn.innerHTML = 'Generating Results...';
+                      submitBtn.style.opacity = '0.7';
                   }
-              }, 500);
-          }
+
+                  // Wait a brief moment to let them see the success message, then transition
+                  setTimeout(showResults, 1200);
+              }
+          }, 250);
 
       } else if (attempts > 100) { // Stop checking after 10 seconds
           clearInterval(checkExist);
@@ -789,6 +809,33 @@ function showResults() {
     </div>
   `).join('');
 
+  // Dynamically build the 4th CTA card based on score
+  let fourthCardHTML = '';
+  if (totalPct >= 50) {
+      fourthCardHTML = `
+          <a href="https://www.costofblackexcellence.com/corporate-exodus-apply.html" target="_blank" class="group bg-cobe-rust/20 border border-cobe-rust/30 p-8 rounded-2xl hover:bg-cobe-rust/30 transition-all flex flex-col relative overflow-hidden">
+              <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-rust/40 rounded-full blur-2xl"></div>
+              <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-rust mb-2 relative z-10">Strategic Exit</span>
+              <h4 class="font-serif text-2xl font-bold text-white mb-3 relative z-10">The Corporate Exodus</h4>
+              <p class="text-sm text-gray-300 leading-relaxed mb-6 flex-grow relative z-10">You are carrying a significant burden. If you are planning an exit, join our 6-week cohort to build what comes next.</p>
+              <span class="text-xs font-bold uppercase tracking-wider text-white relative z-10">Apply Now &rarr;</span>
+          </a>
+      `;
+  } else {
+      fourthCardHTML = `
+          <a href="https://www.costofblackexcellence.com/report-landing.html" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+              <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">Research</span>
+              <h4 class="font-serif text-2xl font-bold text-white mb-3">Access the Report</h4>
+              <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Evidence from 1,039 Black professionals. The proof that what you carry is systematic, not personal.</p>
+              <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Download &rarr;</span>
+          </a>
+      `;
+  }
+
+  // Set the styling for the Consult card so it balances visually
+  const consultClass = totalPct >= 50 ? "bg-white/5 border-white/10 hover:bg-white/10" : "bg-cobe-rust/20 border-cobe-rust/30 hover:bg-cobe-rust/30";
+  const consultAccent = totalPct >= 50 ? "text-cobe-accent" : "text-cobe-rust";
+
   document.getElementById('results-body').innerHTML = `
     <div class="animate-fade-up">
         <div class="text-[10px] font-bold uppercase tracking-[0.2em] text-cobe-accent mb-4">Your Excellence Tax™ Profile</div>
@@ -822,30 +869,24 @@ function showResults() {
             <h3 class="font-serif text-3xl font-bold text-white mb-8 text-center">Your Next Steps</h3>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <a href="https://community.costofblackexcellence.com" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+                <a href="https://costofblackexcellence.com/cobe-community.html" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
                     <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">Community</span>
                     <h4 class="font-serif text-2xl font-bold text-white mb-3">Join The Platform</h4>
                     <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Sanctuary, strategy, and solidarity. A space where your experience does not require explanation.</p>
                     <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Join Now &rarr;</span>
                 </a>
 
-                <a href="https://www.costofblackexcellence.com/report-landing.html" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">Research</span>
-                    <h4 class="font-serif text-2xl font-bold text-white mb-3">Access the Report</h4>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Evidence from 1,039 Black professionals. The proof that what you carry is systematic, not personal.</p>
-                    <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Download &rarr;</span>
-                </a>
-
-                <a href="https://blog.costofblackexcellence.com" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
+                <a href="https://blog.costofblackexcellence.com/toolkit/" target="_blank" class="group bg-white/5 border border-white/10 p-8 rounded-2xl hover:bg-white/10 transition-all flex flex-col">
                     <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-accent mb-2">The Toolkit</span>
                     <h4 class="font-serif text-2xl font-bold text-white mb-3">Boundary Scripts</h4>
                     <p class="text-sm text-gray-400 leading-relaxed mb-6 flex-grow">Direct, Diplomatic, and Documentation strategy scripts for the situations you face every week.</p>
-                    <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Read More &rarr;</span>
+                    <span class="text-xs font-bold uppercase tracking-wider text-cobe-accent group-hover:text-white transition-colors">Access Toolkit &rarr;</span>
                 </a>
 
-                <a href="https://calendly.com/blackexcellenceresearch/meetings-with-natasha" target="_blank" class="group bg-cobe-rust/20 border border-cobe-rust/30 p-8 rounded-2xl hover:bg-cobe-rust/30 transition-all flex flex-col relative overflow-hidden">
-                    <div class="absolute -right-10 -bottom-10 w-32 h-32 bg-cobe-rust/40 rounded-full blur-2xl"></div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-cobe-rust mb-2 relative z-10">1:1 Support</span>
+                ${fourthCardHTML}
+
+                <a href="https://calendly.com/blackexcellenceresearch/meetings-with-natasha" target="_blank" class="group ${consultClass} border p-8 rounded-2xl transition-all flex flex-col relative overflow-hidden">
+                    <span class="text-[10px] font-bold uppercase tracking-widest ${consultAccent} mb-2 relative z-10">1:1 Support</span>
                     <h4 class="font-serif text-2xl font-bold text-white mb-3 relative z-10">Book a Consultation</h4>
                     <p class="text-sm text-gray-300 leading-relaxed mb-6 flex-grow relative z-10">Work directly with Natasha Williams to understand your burden profile and build your strategy.</p>
                     <span class="text-xs font-bold uppercase tracking-wider text-white relative z-10">Book Time &rarr;</span>
@@ -858,12 +899,6 @@ function showResults() {
         </p>
     </div>
   `;
-}
-
-function submitEnquiry(e) {
-  e.preventDefault();
-  alert('Thank you. Your enquiry has been received. Our executive team will respond within two business days.');
-  goLanding();
 }
 </script>
 </body>
